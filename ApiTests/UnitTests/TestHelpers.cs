@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using Api.BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 
