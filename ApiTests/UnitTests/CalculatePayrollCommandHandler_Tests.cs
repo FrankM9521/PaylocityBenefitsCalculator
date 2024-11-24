@@ -16,7 +16,6 @@ using System;
 using Api.Api.Utility;
 using Api.Data.Repositories.Interfaces;
 using Api.BusinessLogic.Services.Interfaces;
-
 namespace ApiTests.UnitTests
 {
     public class CalculatePayrollCommandHandler_Tests
@@ -41,28 +40,28 @@ namespace ApiTests.UnitTests
 
         [Theory]
         // Standard User, No Dependents
-        //    [InlineData(52000, 0, 461.54, 1538.46, Api.Models.DeductionTypes.BenefitsBase, 461.54)]
-      //     [InlineData(12000, 0, 461.54, 0.0, Api.Models.DeductionTypes.BenefitsBase, 461.54)]
-        //[InlineData(6000, 0, 230.77, 0.0, Api.Models.DeductionTypes.BenefitsBase, 230.77)]
+        [InlineData(52000, 0, 461.54, 1538.46, Api.BusinessLogic.Models.DeductionTypes.BenefitsBase, 461.54)]
+        [InlineData(12000, 0, 461.54, 0.0, Api.BusinessLogic.Models.DeductionTypes.BenefitsBase, 461.54)]
+        [InlineData(6000, 0, 230.77, 0.0, Api.BusinessLogic.Models.DeductionTypes.BenefitsBase, 230.77)]
         // Standard User with dependents
-        /* [InlineData(52000, 1, 738.46, 1261.54, Api.Models.DeductionTypes.DependentBenefitsFee, 276.92)]
-         [InlineData(52000, 2, 1015.39, 984.61, Api.Models.DeductionTypes.DependentBenefitsFee, 553.85)]
-          [InlineData(52000, 10, 2000, 0, Api.Models.DeductionTypes.DependentBenefitsFee, 1538.46)]
-      */
+        [InlineData(52000, 1, 738.46, 1261.54, Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee, 276.92)]
+        [InlineData(52000, 2, 1015.39, 984.61, Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee, 553.85)]
+        [InlineData(52000, 10, 2000, 0, Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee, 1538.46)]
+      
         //High Earner With and without Dependents 
-        //  [InlineData(120000, 0, 553.85, 4061.53, DeductionTypes.HighEarnerBenefitsFee, 92.31)]
-        //  [InlineData(120000, 2,  1107.70, 3507.68, DeductionTypes.HighEarnerBenefitsFee, 92.31)]
+        [InlineData(120000, 0, 553.85, 4061.53, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31)]
+        [InlineData(120000, 2,  1107.70, 3507.68, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31)]
 
         // Senior With and without Dependents 
-        //[InlineData(52000, 0, 553.85, 1446.15, Api.Models.DeductionTypes.SeniorBenefitsFee, 92.31, 51)]
-        //[InlineData(52000, 2, 1107.70, 892.30, Api.Models.DeductionTypes.SeniorBenefitsFee, 92.31, 51)]
+        [InlineData(52000, 0, 553.85, 1446.15, Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee, 92.31, 51)]
+        [InlineData(52000, 2, 1107.70, 892.30, Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee, 92.31, 51)]
 
         // Senior is OVER 50
-        //[InlineData(52000, 0, 461.54, 1538.46, Api.Models.DeductionTypes.SeniorBenefitsFee, 0, 50)]
+        [InlineData(52000, 0, 461.54, 1538.46, Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee, 0, 50)]
 
         //Senior High Earner With and without Dependents 
-          [InlineData(120000, 0, 646.16, 3969.22, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31, 51)]
-          [InlineData(120000, 2,  1200.01, 3415.37, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31, 51)]
+        [InlineData(120000, 0, 646.16, 3969.22, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31, 51)]
+        [InlineData(120000, 2,  1200.01, 3415.37, Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee, 92.31, 51)]
 
         public async Task ItCalculatesCorrectly(decimal salary, int numberOfDependents, decimal totalDeductionAmt, decimal netPay, Api.BusinessLogic.Models.DeductionTypes deductionTypeToVerify, decimal deductionAmountToVerify, int age = 30)
         {

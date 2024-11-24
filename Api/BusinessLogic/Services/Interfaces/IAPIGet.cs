@@ -2,7 +2,7 @@
 {
     public interface IAPIGet<TType, TKey>
     {
-        Task<IReadOnlyCollection<TType>> GetAll();
+        Task<IEnumerable<TType>> GetAll();
         Task<TType?> GetByID(TKey id);
     }
 }

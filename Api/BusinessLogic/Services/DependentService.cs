@@ -11,11 +11,11 @@ namespace Api.BusinessLogic.Services
         {
             _dependentRepository = dependentRepository;
         }
-        public async Task<IReadOnlyCollection<Dependent>> GetAll()
+        public async Task<IEnumerable<Dependent>> GetAll()
         {
             var result = await _dependentRepository.Get();
 
-            return result.ToList().AsReadOnly();
+            return result.ToList();
         }
 
         public async Task<Dependent?> GetByID(int id)

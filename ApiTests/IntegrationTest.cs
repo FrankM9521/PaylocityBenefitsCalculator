@@ -11,6 +11,8 @@ public class IntegrationTest : IDisposable
     {
         get
         {
+            return default;
+
             if (_httpClient == default)
             {
                 _httpClient = new HttpClient

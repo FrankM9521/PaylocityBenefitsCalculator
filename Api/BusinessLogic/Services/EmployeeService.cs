@@ -15,7 +15,7 @@ namespace Api.BusinessLogic.Services
             _dependentRepository = dependentRepository;
         }
 
-        public async Task<IReadOnlyCollection<Employee>> GetAll()
+        public async Task<IEnumerable<Employee>> GetAll()
         {
             var employeeResultTask = Task.Run(() => _employeeRepository.Get());
             var dependentResultTask = Task.Run(() => _dependentRepository.Get());
@@ -30,7 +30,7 @@ namespace Api.BusinessLogic.Services
                 employeeResult[d.First().EmployeeId].Dependents = d.ToList();
             }
 
-            return await Task.FromResult(employeeResult.Select(r => r.Value).ToList().AsReadOnly());
+            return await Task.FromResult(employeeResult.Select(r => r.Value).ToList());
         }
 
         public async Task<Employee?> GetByID(int id)
