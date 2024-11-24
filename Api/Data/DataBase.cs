@@ -10,7 +10,7 @@ namespace Api.Data
         private static readonly Lazy<DataBase> lazy = new Lazy<DataBase>(() => new DataBase());
         // since most lookups will be by employee, I am using employee id as the key for faster lookups
         private static Dictionary<int, List<DependentEntity>> _dependents;
-        private static List<PayStatementEntity> _payStatements;
+        private static List<PayCheckEntity> _payStatements;
         private static List<EmployeeEntity> _employees;
 
         public static DataBase Instance => lazy.Value;
@@ -27,7 +27,7 @@ namespace Api.Data
                 case EmployeeEntity emp:
                     _employees.Add(emp);
                     break;
-                case PayStatementEntity payStatement:
+                case PayCheckEntity payStatement:
                     _payStatements.Add(payStatement);
                     break;
                 case DependentEntity dep:
@@ -50,9 +50,9 @@ namespace Api.Data
             get { return (_dependents ?? (_dependents = new Dictionary<int, List<DependentEntity>>())).SelectMany(v => v.Value).ToList().AsReadOnly(); }
         }
 
-        public IReadOnlyList<PayStatementEntity> PayStatements
+        public IReadOnlyList<PayCheckEntity> PayStatements
         {
-            get { return (_payStatements ?? (_payStatements = new List<PayStatementEntity>())).AsReadOnly(); }
+            get { return (_payStatements ?? (_payStatements = new List<PayCheckEntity>())).AsReadOnly(); }
         }
 
         public void SetData(List<EmployeeEntity> employees, List<DependentEntity> dependents)

@@ -5,24 +5,23 @@ using Api.Data.Repositories.Interfaces;
 
 namespace Api.Data.Repositories
 {
-    public interface IPayStatementRepository : ICreateRepository<CalculatePayStatement> {  }
 
-    public class PayStatementRepository : RepositoryBase,  IPayStatementRepository
+    public class PayCheckRepository : RepositoryBase,  IPayCheckRepository
     {
         private readonly IDependentRepository _dependentRepository;
-        public PayStatementRepository(IDbContextAccessor dbContextAccessor, IDependentRepository dependentRepository) : base(dbContextAccessor) 
+        public PayCheckRepository(IDbContextAccessor dbContextAccessor, IDependentRepository dependentRepository) : base(dbContextAccessor) 
         { 
             _dependentRepository = dependentRepository;
         }
 
-        public async Task<CreateObjectResponse> Create(CalculatePayStatement value)
+        public async Task<CreateObjectResponse> Create(PayCheck value)
         {
             DataComtext.Add(value.ToEntity());
 
             return await Task.FromResult(new CreateObjectResponse((object)value.ID));
         }
 
-        public async Task<IEnumerable<CalculatePayStatement>?> GetByEmployeeID(int employeeID)
+        public async Task<IEnumerable<PayCheck>?> GetByEmployeeID(int employeeID)
         {
             var dependents = await _dependentRepository.GetByEmployeeID(employeeID);
 

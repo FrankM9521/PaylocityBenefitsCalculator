@@ -12,23 +12,31 @@ using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
 using Api.Data;
-using Api.Data.Repositories;
 using System;
 using Api.Api.Utility;
+using Api.Data.Repositories.Interfaces;
+using Api.BusinessLogic.Services.Interfaces;
 
 namespace ApiTests.UnitTests
 {
     public class CalculatePayrollCommandHandler_Tests
     {
-        private CalculatePayrollCommandHandler _sut;
+        private CalculatePayCheckCommandHandler _sut;
         private Mock<IEmployeeService> _employeeServiceMock = new Mock<IEmployeeService>();
         private Mock<IValidationCollection<Employee>> _employeeValidationMock = new Mock<IValidationCollection<Employee>>();
-        private Mock<IPayStatementRepository> _payrollRepositoryMock = new Mock<IPayStatementRepository>();
+        private Mock<IPayCheckService> _payCheckServiceMock = new Mock<IPayCheckService>();
+        private Mock<IPayCheckRepository> _payCheckRepositoryMock = new Mock<IPayCheckRepository>();
+        private readonly ICalculationLibraryFactory _calculationLibraryFactory;
 
         public CalculatePayrollCommandHandler_Tests()
         {
+            _calculationLibraryFactory = new CalculationLibraryFactory(new BenefitsConfig());   
             _employeeValidationMock.Setup(x => x.Validate(It.IsAny<Employee>())).ReturnsAsync(new ValidationResponse());
-           _sut = new CalculatePayrollCommandHandler(_employeeServiceMock.Object, _employeeValidationMock.Object, new CalculatePayrollService(_payrollRepositoryMock.Object, new BenefitsConfig()));
+            _sut = new CalculatePayCheckCommandHandler(
+                _employeeServiceMock.Object,
+                _employeeValidationMock.Object,
+                new CalculatePayCheckService(_payCheckRepositoryMock.Object, new BenefitsConfig(), _calculationLibraryFactory),
+                _payCheckServiceMock.Object);
         }
 
         [Theory]
@@ -59,11 +67,11 @@ namespace ApiTests.UnitTests
         public async Task ItCalculatesCorrectly(decimal salary, int numberOfDependents, decimal totalDeductionAmt, decimal netPay, Api.BusinessLogic.Models.DeductionTypes deductionTypeToVerify, decimal deductionAmountToVerify, int age = 30)
         {
             //Arrange
-            var request = new CalculatePayrollCommand(1);
+            var request = new CalculatePayCheckCommand(1);
             var employee = GetEmployee(request.EmployeeID, salary, numberOfDependents, age);
 
             _employeeServiceMock.Setup(s => s.GetByID(It.IsAny<int>())).ReturnsAsync(employee);
-            _payrollRepositoryMock.Setup(p => p.Create(It.IsAny<CalculatePayStatement>())).ReturnsAsync(new Api.BusinessLogic.Models.Response.CreateObjectResponse(Guid.NewGuid()));
+            _payCheckServiceMock.Setup(p => p.Create(It.IsAny<PayCheck>())).ReturnsAsync(new Api.BusinessLogic.Models.Response.CreateObjectResponse(Guid.NewGuid()));
 
             var result = await _sut.Handle(request, default(CancellationToken));
 

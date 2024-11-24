@@ -2,5 +2,5 @@
 
 namespace Api.BusinessLogic.Models.Response
 {
-    public record CalculatePayrollResponse(CalculatePayrollEmployee Employee, CalculatePayrollStatement PayCheck);
+    public record CalculateCheckResponse(CalculatePayrollEmployee Employee, CalculatePayrollStatement PayCheck);
 }

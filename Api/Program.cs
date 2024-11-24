@@ -34,14 +34,12 @@ internal class Program
         });
 
         builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-
-        builder.Services.AddScoped<IDbContextAccessor, DbContextAccessor>();
-
-        builder.Services.AddSingleton<IBenefitsConfig, BenefitsConfig>();
-
+        builder.Services.RegisterDatabase();
+        builder.Services.RegisterConfig();
         builder.Services.RegisterValidationCollections();
         builder.Services.RegisterRepositories();
         builder.Services.RegisterServices();
+        builder.Services.RegisterFactories();
 
         var app = builder.Build();
 

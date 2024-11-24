@@ -16,7 +16,7 @@ namespace ApiTests.UnitTests
         public  async Task ItCalculatesStandardBenefitsDeductions(decimal salary, decimal expectedDeduction, decimal expectedNet)
         {
             // Arrange
-            var sut = new StandardBenfitDeductionCalculator(CalcLibrary());
+            var sut = new StandardBenfitDeductionCalculator(StandardLibrary());
 
             // Act
             var result = await sut.Calculate(TestHelpers.TestPayStatement(salary));
@@ -32,9 +32,9 @@ namespace ApiTests.UnitTests
         [InlineData(52000, 2, 553.85, 1446.15)]
         [InlineData(52000, 3, 830.77, 1169.23)]
         [InlineData(52000, 10, 2000, 0)]
-        public async Task ItCalculatesDependentDeductions(decimal salary, int numberOfDependents, decimal expectedDeduction, decimal expectedNet)
+        public async Task ItCalculatesStandardDependentDeductions(decimal salary, int numberOfDependents, decimal expectedDeduction, decimal expectedNet)
         {
-            var sut = new DependentDeductionCalculator(CalcLibrary());
+            var sut = new DependentDeductionCalculator(StandardLibrary());
 
             var result = await sut.Calculate(TestHelpers.TestPayStatement(salary, numberOfDependents));
 
@@ -47,9 +47,9 @@ namespace ApiTests.UnitTests
         [InlineData(80000, 0, 3076.92)]
         [InlineData(120000, 92.31, 4523.07)]
         [InlineData(80000.01, 61.54, 3015.38)]
-        public async Task ItCalculatesHighEarnerDeductions(decimal salary, decimal expectedDeduction, decimal expectedNet)
+        public async Task ItCalculatesStandardHighEarnerDeductions(decimal salary, decimal expectedDeduction, decimal expectedNet)
         {
-            var sut = new CalculateHighEarnerDeductionCalculator(CalcLibrary());
+            var sut = new CalculateHighEarnerDeductionCalculator(StandardLibrary());
             var result = await sut.Calculate(TestHelpers.TestPayStatement(salary));
 
             Assert.Equal(expectedDeduction, result.Deductions[Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee]);
@@ -61,18 +61,22 @@ namespace ApiTests.UnitTests
         [InlineData(52000, 51, 92.31, 1907.69)]
         [InlineData(52000, 100, 92.31, 1907.69)]
         [InlineData(2000, 100, 76.92, 0)]
-        public async Task ItCalculatesSeniorDeductions(decimal salary, int age, decimal expectedDeduction, decimal expectedNet)
+        public async Task ItCalculatesStandardSeniorDeductions(decimal salary, int age, decimal expectedDeduction, decimal expectedNet)
         {
-            var sut = new SeniorBenefitsDeductionCalculator(CalcLibrary(), new BenefitsConfig());
+            var sut = new SeniorBenefitsDeductionCalculator(StandardLibrary(), new BenefitsConfig());
             var result = await sut.Calculate(TestHelpers.TestPayStatement(salary, 0, age));
 
             Assert.Equal(expectedDeduction, result.Deductions[Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee]);
             Assert.Equal(expectedNet, result.NetPay);
         }
 
-        private ICalculationsLibrary CalcLibrary(bool statndard = true)
+        private ICalculationsLibrary StandardLibrary(bool statndard = true)
         {
             return new StandardCalculationLibrary(new BenefitsConfig());
         }
+
+        private ICalculationsLibrary LastPayCheckOfYearCalculator
+
+
     }
 }

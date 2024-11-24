@@ -1,51 +1,49 @@
-﻿using Api.BusinessLogic.Mappers;
-using Api.BusinessLogic.Models;
+﻿using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.Request;
 using Api.BusinessLogic.Services;
+using Api.BusinessLogic.Services.Interfaces;
 using Api.BusinessLogic.Validation;
-using Api.Data;
 using MediatR;
 
 namespace Api.BusinessLogic.Commands
 {
-    public class CalculatePayrollCommandHandler : IRequestHandler<CalculatePayrollCommand, CalculatePayrollCommandResponse>
+    public class CalculatePayCheckCommandHandler : IRequestHandler<CalculatePayCheckCommand, CalculatePayCheckCommandResponse>
     {
         private readonly IValidationCollection<Employee> _employeeValidationCollection;
         private readonly IEmployeeService _employeeService;
-        private readonly ICalculatePayrollService _payStatementFactory;
-        public CalculatePayrollCommandHandler(IEmployeeService employeeService,
+        private readonly ICalculatePayCheckService _payStatementFactory;
+        private readonly IPayCheckService _payCheckService;
+        public CalculatePayCheckCommandHandler(IEmployeeService employeeService,
             IValidationCollection<Employee> employeeValidationCollection,
-            ICalculatePayrollService payStatementFactory)
+            ICalculatePayCheckService payStatementFactory,
+            IPayCheckService payCheckService)
         {
             _employeeService = employeeService;
             _payStatementFactory = payStatementFactory;
             _employeeValidationCollection = employeeValidationCollection;
+            _payCheckService = payCheckService;
         }
-        public async Task<CalculatePayrollCommandResponse> Handle(CalculatePayrollCommand request, CancellationToken cancellationToken)
+        public async Task<CalculatePayCheckCommandResponse> Handle(CalculatePayCheckCommand request, CancellationToken cancellationToken)
         {
             var employee = await _employeeService.GetByID(request.EmployeeID);
 
             if (employee == null)
             {
-                return new CalculatePayrollCommandResponse(null, null, false, "Not Found");
+                return new CalculatePayCheckCommandResponse(null, null, false, "Not Found");
             }
 
             var validationResult = await _employeeValidationCollection.Validate(employee);
 
             if (validationResult.Success)
             {
-                var previousStatements = DB.PayStatements.Select(pay => pay.ToCalculatePayrollStatement(employee.Dependents.Count()));
+                var previousStatements = await _payCheckService.GetByEmployeeID(request.EmployeeID);
                 var createPayStatementRequest = new CalculatePayrollRequest(employee, previousStatements);
                 var createResult = await _payStatementFactory.Calculate(createPayStatementRequest);
 
-                return new CalculatePayrollCommandResponse(createResult.Employee, createResult.PayCheck);
+                return new CalculatePayCheckCommandResponse(createResult.Employee, createResult.PayCheck);
             }
 
-            return new CalculatePayrollCommandResponse(null, null, false, validationResult.ErrorMessage);
-        }
-        private DataBase DB
-        {
-            get { return DataBase.Instance; }
+            return new CalculatePayCheckCommandResponse(null, null, false, validationResult.ErrorMessage);
         }
     }
 }

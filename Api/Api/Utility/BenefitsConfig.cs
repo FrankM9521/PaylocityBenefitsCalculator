@@ -3,7 +3,7 @@
     public interface IBenefitsConfig
     {
         int PAY_PERIODS_PER_YEAR { get; set; }
-        decimal EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT { get; set; }
+        decimal BASE_BENEFITS_MONTHLY_DEDUCTION_AMT { get; set; }
         decimal DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT { get; set; }
         decimal HIGH_EARNER_BENEFITS_YEARLY_DEDUCTION_FLOOR_AMT { get; set; }
         decimal HIGH_EARNERS_BENEFITS_YEARLY_DEDUCTION_PCT { get; set; }
@@ -17,7 +17,7 @@
     public class BenefitsConfig : IBenefitsConfig
     {
         public int PAY_PERIODS_PER_YEAR { get; set; } = 26;
-        public decimal EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT { get; set; } = 1000M;
+        public decimal BASE_BENEFITS_MONTHLY_DEDUCTION_AMT { get; set; } = 1000M;
         public decimal DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT { get; set; } = 600M;
         public decimal HIGH_EARNER_BENEFITS_YEARLY_DEDUCTION_FLOOR_AMT { get; set; } = 80000M;
         public decimal HIGH_EARNERS_BENEFITS_YEARLY_DEDUCTION_PCT { get; set; } = .02M;

@@ -12,7 +12,7 @@ namespace Api.BusinessLogic.Calculations.Deductions
         {
             _benefitsConfig = benefitsConfig;   
         }
-        public async Task<CalculatePayStatement> Calculate(CalculatePayStatement payStatement)
+        public async Task<CalculatePayCheck> Calculate(CalculatePayCheck payStatement)
         {
             var deduction = 0M;
             var hasDeduction = payStatement.Employee.DateOfBirth <= DateTime.UtcNow.AddYears(_benefitsConfig.SENIOR_BENFITS_AGE_FLOOR * -1);

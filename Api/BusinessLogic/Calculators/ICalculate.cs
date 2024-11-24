@@ -4,6 +4,6 @@ namespace Api.BusinessLogic.Calculators
 {
     public interface ICalculate
     {
-        Task<CalculatePayStatement> Calculate(CalculatePayStatement payStatement);
+        Task<CalculatePayCheck> Calculate(CalculatePayCheck payStatement);
     }
 }

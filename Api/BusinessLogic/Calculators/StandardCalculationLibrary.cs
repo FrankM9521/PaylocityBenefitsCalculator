@@ -1,20 +1,19 @@
 ﻿using Api.Api.Utility;
 using Api.BusinessLogic.Calculations.Interfaces;
 using Api.BusinessLogic.Models;
-using Api.Data;
 
 namespace Api.BusinessLogic.Calculations
 {
     public class StandardCalculationLibrary : ICalculationsLibrary
     {
-        private readonly IBenefitsConfig _benefitsConfig;
+        protected readonly IBenefitsConfig _benefitsConfig;
 
         public StandardCalculationLibrary(IBenefitsConfig benefitsConfig)
         {
             _benefitsConfig = benefitsConfig;
         }   
 
-        public decimal GetHighEarnersDeduction(CalculatePayStatement payStatement)
+        public virtual decimal GetHighEarnersDeduction(CalculatePayCheck payStatement)
         {
             var yearlyGrossPay = GetEstimatedGrossYearlyPay(payStatement);
             var deduction = 0M;
@@ -32,7 +31,7 @@ namespace Api.BusinessLogic.Calculations
             return deduction;
         }
 
-        public decimal GetDependentDeduction(CalculatePayStatement payStatement)
+        public virtual decimal GetDependentDeduction(CalculatePayCheck payStatement)
         {
             var numberOfDependents = payStatement.Employee.Dependents.Count();
             var deduction = Math.Round(numberOfDependents * _benefitsConfig.DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
@@ -45,25 +44,25 @@ namespace Api.BusinessLogic.Calculations
             return deduction;
         }
 
-        public decimal GetBaseDeduction(CalculatePayStatement payStatement)
+        public virtual decimal GetBaseDeduction(CalculatePayCheck payStatement)
         {
-            return Math.Round(_benefitsConfig.EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
+            return Math.Round(_benefitsConfig.BASE_BENEFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
-        public decimal GetSeniorDeduction(CalculatePayStatement payStatement)
+        public virtual decimal GetSeniorDeduction(CalculatePayCheck payStatement)
         {
             return Math.Round(_benefitsConfig.SENIOR_BENEFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
-        private decimal GetEstimatedGrossYearlyPay(CalculatePayStatement payStatement)
+        private decimal GetEstimatedGrossYearlyPay(CalculatePayCheck payStatement)
         {
             var estGrossPay = 0M;
        
-            if (payStatement.PreviousPayrollStatements.Count() > 0)
+            if (payStatement.PreviousPayChecks.Count() > 0)
             {
-                var ytdGrossPay = payStatement.PreviousPayrollStatements.Sum(pay => pay.GrossPay) + payStatement.GrossPay;
+                var ytdGrossPay = payStatement.PreviousPayChecks.Sum(pay => pay.GrossPay) + payStatement.GrossPay;
 
-                estGrossPay = Math.Round(ytdGrossPay / (payStatement.PreviousPayrollStatements.Count() + 1) * _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
+                estGrossPay = Math.Round(ytdGrossPay / (payStatement.PreviousPayChecks.Count() + 1) * _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
             }
             else
             {

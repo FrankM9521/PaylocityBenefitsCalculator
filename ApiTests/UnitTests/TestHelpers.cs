@@ -8,11 +8,11 @@ namespace ApiTests.UnitTests
     {
         public static class TestHelpers
         {
-            public static CalculatePayStatement TestPayStatement(decimal salary, int numberOfDependents = 0, int age = 34)
+            public static CalculatePayCheck TestPayStatement(decimal salary, int numberOfDependents = 0, int age = 34)
             {
                 var emp = TestEmployee(1, salary, numberOfDependents, age);
 
-                return new CalculatePayStatement(null, emp)
+                return new CalculatePayCheck(null, emp)
                 {
                     GrossPay = emp.Salary / 26
                 };

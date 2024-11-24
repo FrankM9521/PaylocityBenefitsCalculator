@@ -1,21 +1,10 @@
 ﻿using Api.BusinessLogic.Models;
-using Api.BusinessLogic.Models.Response;
+using Api.BusinessLogic.Services.Interfaces;
 using Api.Data.Repositories.Interfaces;
 
 namespace Api.BusinessLogic.Services
 {
-    public interface IAPIGet<T>
-    {
-        Task<IReadOnlyCollection<T>> GetAll();
-        Task<T?> GetByID(int id);
-    }
-
-    public interface IAPIPost<T>
-    {
-        Task<CreateObjectResponse> Create(Dependent newDependent);
-    }
-
-    public interface IEmployeeService : IAPIGet<Employee> { }
+    public interface IEmployeeService : IAPIGet<Employee, int> { }
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
