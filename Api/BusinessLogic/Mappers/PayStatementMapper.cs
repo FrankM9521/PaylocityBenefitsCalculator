@@ -9,26 +9,24 @@ namespace Api.BusinessLogic.Mappers
     {
         public static PayStatementEntity ToEntity(this CalculatePayStatement value)
         {
-            var payStatement = new PayStatementEntity
+            return new PayStatementEntity
             {
                 EmployeeID = value.Employee.Id,
                 GrossPay = value.GrossPay,
                 ID = value.ID,
                 NetPay = value.NetPay,
                 Order = value.Order,
+                Deductions = value.Deductions.Select(d => new
+                {
+                    d.Key,
+                    d.Value
+                }).ToDictionary(k => (DeductionTypes)k.Key, v => v.Value)
             };
-
-            foreach (var item in value.Deductions)
-            {
-                payStatement.AddDeduction((DeductionTypes)item.Key, item.Value);
-            }
-
-            return payStatement;
         }
 
         public static CalculatePayStatement ToModel(this PayStatementEntity value)
         {
-            var payStatement = new CalculatePayStatement()
+            var payStatement = new PayStatement()
             {
                 GrossPay = value.GrossPay,
                 ID = value.ID,
