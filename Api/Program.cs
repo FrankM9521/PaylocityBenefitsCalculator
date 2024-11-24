@@ -1,11 +1,8 @@
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;
-using Api.BusinessLogic.Models;
-using Api.Data.Repositories;
-using Api.BusinessLogic.Services;
-using Api.BusinessLogic.Validation;
 using Api.Data;
+using Api.Api.Utility;
 
 internal class Program
 {
@@ -37,14 +34,14 @@ internal class Program
         });
 
         builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
         builder.Services.AddScoped<IDbContextAccessor, DbContextAccessor>();
-        builder.Services.AddTransient<IValidationCollection<Employee>, EmployeeValidationCollection>();
-        builder.Services.AddTransient<IValidationCollection<Dependent>, DependentValidationCollection>();
-        builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-        builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-        builder.Services.AddScoped<IDependentRepository, DependentRepository>();
-        builder.Services.AddScoped<IDependentService, DependentService>();
-        builder.Services.AddTransient<ICalculatePayrollService, CalculatePayrollService>();
+
+        builder.Services.AddSingleton<IBenefitsConfig, BenefitsConfig>();
+
+        builder.Services.RegisterValidationCollections();
+        builder.Services.RegisterRepositories();
+        builder.Services.RegisterServices();
 
         var app = builder.Build();
 

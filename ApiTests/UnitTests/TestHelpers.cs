@@ -12,9 +12,8 @@ namespace ApiTests.UnitTests
             {
                 var emp = TestEmployee(1, salary, numberOfDependents, age);
 
-                return new PayStatement
+                return new PayStatement(null, emp)
                 {
-                    Employee = emp,
                     GrossPay = emp.Salary / 26
                 };
             }

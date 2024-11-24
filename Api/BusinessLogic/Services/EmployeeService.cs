@@ -1,6 +1,6 @@
 ﻿using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.Response;
-using Api.Data.Repositories;
+using Api.Data.Repositories.Interfaces;
 
 namespace Api.BusinessLogic.Services
 {
@@ -12,7 +12,7 @@ namespace Api.BusinessLogic.Services
 
     public interface IAPIPost<T>
     {
-        Task<CreateObjectResponse> Post(Dependent newDependent);
+        Task<CreateObjectResponse> Create(Dependent newDependent);
     }
 
     public interface IEmployeeService : IAPIGet<Employee> { }

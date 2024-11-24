@@ -1,15 +1,12 @@
 ﻿using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.Response;
-using Api.Data.Repositories;
+using Api.Data.Repositories.Interfaces;
 
 namespace Api.BusinessLogic.Services
 {
-    public interface IDependentService : IAPIGet<Dependent>, IAPIPost<Dependent> { }
-
     public class DependentService : IDependentService
     {
         private readonly IDependentRepository _dependentRepository;
-
         public DependentService(IDependentRepository dependentRepository)
         {
             _dependentRepository = dependentRepository;
@@ -23,14 +20,11 @@ namespace Api.BusinessLogic.Services
 
         public async Task<Dependent?> GetByID(int id)
         {
-            var result = await _dependentRepository.GetByID(id);
-
-            return result;
+            return await _dependentRepository.GetByID(id);
         }
 
-        public async Task<CreateObjectResponse> Post(Dependent newDependent)
+        public async Task<CreateObjectResponse> Create(Dependent newDependent)
         {
-            // rules are being checked at the repository layer, they really should be injected, but time constraints
             return await _dependentRepository.Create(newDependent);
         }
     }

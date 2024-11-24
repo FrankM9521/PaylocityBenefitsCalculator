@@ -1,4 +1,5 @@
-﻿using Api.BusinessLogic.Calculations.Interfaces;
+﻿using Api.Api.Utility;
+using Api.BusinessLogic.Calculations.Interfaces;
 
 namespace Api.BusinessLogic.Calculations.Deductions
 {

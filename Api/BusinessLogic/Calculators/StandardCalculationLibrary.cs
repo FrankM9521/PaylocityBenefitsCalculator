@@ -1,4 +1,5 @@
-﻿using Api.BusinessLogic.Calculations.Interfaces;
+﻿using Api.Api.Utility;
+using Api.BusinessLogic.Calculations.Interfaces;
 using Api.BusinessLogic.Models;
 using Api.Data;
 
@@ -6,14 +7,21 @@ namespace Api.BusinessLogic.Calculations
 {
     public class StandardCalculationLibrary : ICalculationsLibrary
     {
+        private readonly IBenefitsConfig _benefitsConfig;
+
+        public StandardCalculationLibrary(IBenefitsConfig benefitsConfig)
+        {
+            _benefitsConfig = benefitsConfig;
+        }   
+
         public decimal GetHighEarnersDeduction(PayStatement payStatement)
         {
             var yearlyGrossPay = GetEstimatedGrossYearlyPay(payStatement);
             var deduction = 0M;
 
-            if (yearlyGrossPay > Constants.HIGH_EARNER_BENEFITS_YEARLY_DEDUCTION_FLOOR_AMT)
+            if (yearlyGrossPay > _benefitsConfig.HIGH_EARNER_BENEFITS_YEARLY_DEDUCTION_FLOOR_AMT)
             {
-                deduction = Math.Round(yearlyGrossPay * Constants.HIGH_EARNERS_BENEFITS_YEARLY_DEDUCTION_PCT / Constants.PAY_PERIODS_PER_YEAR, 2);
+                deduction = Math.Round(yearlyGrossPay * _benefitsConfig.HIGH_EARNERS_BENEFITS_YEARLY_DEDUCTION_PCT / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
 
                 if (deduction > payStatement.NetPay)
                 {
@@ -27,7 +35,7 @@ namespace Api.BusinessLogic.Calculations
         public decimal GetDependentDeduction(PayStatement payStatement)
         {
             var numberOfDependents = payStatement.Employee.Dependents.Count();
-            var deduction = Math.Round(numberOfDependents * Constants.DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT * 12 / Constants.PAY_PERIODS_PER_YEAR, 2);
+            var deduction = Math.Round(numberOfDependents * _benefitsConfig.DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
 
             if (deduction > payStatement.NetPay)
             {
@@ -39,38 +47,30 @@ namespace Api.BusinessLogic.Calculations
 
         public decimal GetBaseDeduction(PayStatement payStatement)
         {
-            return Math.Round(Constants.EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT * 12 / Constants.PAY_PERIODS_PER_YEAR, 2);
+            return Math.Round(_benefitsConfig.EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
         public decimal GetSeniorDeduction(PayStatement payStatement)
         {
-            return Math.Round(Constants.SENIOR_BENEFITS_MONTHLY_DEDUCTION_AMT * 12 / Constants.PAY_PERIODS_PER_YEAR, 2);
+            return Math.Round(_benefitsConfig.SENIOR_BENEFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
         private decimal GetEstimatedGrossYearlyPay(PayStatement payStatement)
         {
             var estGrossPay = 0M;
-            var currentStatements = DB.PayStatements.Where(pay => pay.EmployeeID == payStatement.Employee.Id);
-
-            // if they have been paid prior, we need to average out based on how many previous pay statements (they may have gottebn a raise)
-            if (currentStatements.Any())
+       
+            if (payStatement.PreviousPayrollStatements.Count() > 0)
             {
-                var ytdGrossPay = currentStatements.Sum(pay => pay.GrossPay) + payStatement.GrossPay;
+                var ytdGrossPay = payStatement.PreviousPayrollStatements.Sum(pay => pay.GrossPay) + payStatement.GrossPay;
 
-                estGrossPay = Math.Round(ytdGrossPay / (currentStatements.Count() + 1) * Constants.PAY_PERIODS_PER_YEAR, 2);
+                estGrossPay = Math.Round(ytdGrossPay / (payStatement.PreviousPayrollStatements.Count() + 1) * _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
             }
             else
             {
-                estGrossPay = payStatement.GrossPay * Constants.PAY_PERIODS_PER_YEAR;
+                estGrossPay = payStatement.GrossPay * _benefitsConfig.PAY_PERIODS_PER_YEAR;
             }
 
             return estGrossPay;
-        }
-
-        //
-        private DataBase DB
-        {
-            get { return DataBase.Instance; }
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Api.BusinessLogic.Calculations.Deductions;
+﻿using Api.BusinessLogic.Calculators;
 
 namespace Api.BusinessLogic.Calculations.Interfaces
 {
     public interface IDeductionCalculatorCollection
     {
-        IEnumerable<IDeduction> Deductions { get; }
+        IEnumerable<ICalculate> Deductions { get; }
     }
 }

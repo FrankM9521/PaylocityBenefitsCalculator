@@ -1,6 +1,6 @@
-﻿namespace Api.Data.Repositories
+﻿namespace Api.Data.Repositories.Interfaces
 {
-    public interface IGetRepositoryBase<T>
+    public interface IGetRepository<T>
     {
         Task<IEnumerable<T>> Get();
         Task<T?> GetByID(int id);

@@ -34,9 +34,9 @@ namespace Api.BusinessLogic.Commands
 
             if (validationResult.Success)
             {
-                var previousStatements = DB.PayStatements.Select(pay => pay.ToModel(employee.Dependents.Count()));
+                var previousStatements = DB.PayStatements.Select(pay => pay.ToCalculatePayrollStatement(employee.Dependents.Count()));
                 var createPayStatementRequest = new CalculatePayrollRequest(employee, previousStatements);
-                var createResult = await _payStatementFactory.Create(createPayStatementRequest);
+                var createResult = await _payStatementFactory.Calculate(createPayStatementRequest);
 
                 return new CalculatePayrollCommandResponse(createResult.Employee, createResult.PayCheck);
             }

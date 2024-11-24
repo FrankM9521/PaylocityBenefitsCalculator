@@ -2,5 +2,5 @@
 
 namespace Api.BusinessLogic.Models.Response
 {
-    public record CreateObjectResponse(int? newId, bool Success = true, HttpStatusCode HttpStatusCode = HttpStatusCode.Created, string ErrorMessage = "");
+    public record CreateObjectResponse(object? newId, bool Success = true, HttpStatusCode HttpStatusCode = HttpStatusCode.Created, string ErrorMessage = "");
 }

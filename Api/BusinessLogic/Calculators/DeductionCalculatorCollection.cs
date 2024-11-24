@@ -1,22 +1,24 @@
-﻿using Api.BusinessLogic.Calculations.Deductions;
+﻿using Api.Api.Utility;
+using Api.BusinessLogic.Calculations.Deductions;
 using Api.BusinessLogic.Calculations.Interfaces;
+using Api.BusinessLogic.Calculators;
 
 namespace Api.BusinessLogic.Calculations
 {
     public class DeductionCalculatorCollection : IDeductionCalculatorCollection
     {
-        private readonly IEnumerable<IDeduction> _deductions;
-        public DeductionCalculatorCollection(ICalculationsLibrary library)
+        private readonly IEnumerable<ICalculate> _deductions;
+        public DeductionCalculatorCollection(ICalculationsLibrary library, IBenefitsConfig benefitsConfig)
         {
-            _deductions = new List<IDeduction>
+            _deductions = new List<ICalculate>
             {
                 new StandardBenfitDeductionCalculator(library),
                new DependentDeductionCalculator(library),
                new CalculateHighEarnerDeductionCalculator(library),
-               new SeniorBenefitsDeductionCalculator(library)
+               new SeniorBenefitsDeductionCalculator(library, benefitsConfig)
             };
         }
 
-        public IEnumerable<IDeduction> Deductions => _deductions;
+        public IEnumerable<ICalculate> Deductions => _deductions;
     }
 }

@@ -2,49 +2,35 @@
 using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.Response;
 using Api.BusinessLogic.Validation;
+using Api.Data.Repositories.Interfaces;
 using System.Net;
 
 namespace Api.Data.Repositories
 {
-    public class DependentValidationCollection : ValidatiorCollection<Dependent>, IValidationCollection<Dependent>
-    {
-        public DependentValidationCollection()
-        {
-            _validators.Add(new ValidateDependentOnlyHasOneSpouseOrDomesticPartner());
-        }
-    }
-
-    public class EmployeeValidationCollection : ValidatiorCollection<Employee>, IValidationCollection<Employee>
-    {
-        public EmployeeValidationCollection()
-        {
-            _validators.Add(new ValidateEmployeeHasLessThan26Checks());
-        }
-    }
-
-    public class DependentRepository : IDependentRepository
+    public class DependentRepository : RepositoryBase,  IDependentRepository
     {
         private readonly IValidationCollection<Dependent> _dependentValidationCollection;
 
-        public DependentRepository(IValidationCollection<Dependent> dependentValidationCollection)
+        public DependentRepository(IValidationCollection<Dependent> dependentValidationCollection, IDbContextAccessor dbContextAccessor) : base(dbContextAccessor)
         {
             _dependentValidationCollection = dependentValidationCollection;
+            _dbContexAccessor = dbContextAccessor;
         }
 
         public async Task<IEnumerable<Dependent>> Get()
         {
-            return await Task.FromResult(DB.Dependents.Select(d => d.ToDomain())) ?? new List<Dependent>();
+            return await Task.FromResult(DataComtext.Dependents.Select(d => d.ToDomain())) ?? new List<Dependent>();
         }
 
         public async Task<Dependent?> GetByID(int id)
         {
-            var entity = DB.Dependents.FirstOrDefault(emp => emp.Id == id);
+            var entity = DataComtext.Dependents.FirstOrDefault(emp => emp.Id == id);
 
             return entity != null ? await Task.FromResult(entity.ToDomain()) : null;
         }
         public async Task<IEnumerable<Dependent>> GetByEmployeeID(int employeeID)
         {
-            return await Task.FromResult(DB.Dependents.Where(dep => dep.EmployeeId == employeeID).Select(dep => dep.ToDomain()))
+            return await Task.FromResult(DataComtext.Dependents.Where(dep => dep.EmployeeId == employeeID).Select(dep => dep.ToDomain()))
                 ?? new List<Dependent>();
         }
         public async Task<CreateObjectResponse> Create(Dependent newDependent)
@@ -54,9 +40,9 @@ namespace Api.Data.Repositories
             if (result.Success)
             {
                 // next id
-                newDependent.Id = DB.Dependents.Max(d => d.Id) + 1;
+                newDependent.Id = DataComtext.Dependents.Max(d => d.Id) + 1;
 
-                DB.Add(newDependent.ToEntity());
+                DataComtext.Add(newDependent.ToEntity());
 
                 return new CreateObjectResponse(newDependent.Id);
             }
@@ -64,13 +50,6 @@ namespace Api.Data.Repositories
             {
                 return new CreateObjectResponse(null, false, HttpStatusCode.BadRequest, result.ErrorMessage);
             }
-        }
-
-
-
-        private DataBase DB
-        {
-            get { return DataBase.Instance; }
         }
     }
 }

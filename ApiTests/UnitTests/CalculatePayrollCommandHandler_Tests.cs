@@ -12,6 +12,9 @@ using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
 using Api.Data;
+using Api.Data.Repositories;
+using System;
+using Api.Api.Utility;
 
 namespace ApiTests.UnitTests
 {
@@ -20,14 +23,12 @@ namespace ApiTests.UnitTests
         private CalculatePayrollCommandHandler _sut;
         private Mock<IEmployeeService> _employeeServiceMock = new Mock<IEmployeeService>();
         private Mock<IValidationCollection<Employee>> _employeeValidationMock = new Mock<IValidationCollection<Employee>>();
+        private Mock<IPayStatementRepository> _payrollRepositoryMock = new Mock<IPayStatementRepository>();
 
         public CalculatePayrollCommandHandler_Tests()
         {
             _employeeValidationMock.Setup(x => x.Validate(It.IsAny<Employee>())).ReturnsAsync(new ValidationResponse());
-
-       
-           _sut = new CalculatePayrollCommandHandler(_employeeServiceMock.Object, _employeeValidationMock.Object, new CalculatePayrollService());
-
+           _sut = new CalculatePayrollCommandHandler(_employeeServiceMock.Object, _employeeValidationMock.Object, new CalculatePayrollService(_payrollRepositoryMock.Object, new BenefitsConfig()));
         }
 
         [Theory]
@@ -62,6 +63,7 @@ namespace ApiTests.UnitTests
             var employee = GetEmployee(request.EmployeeID, salary, numberOfDependents, age);
 
             _employeeServiceMock.Setup(s => s.GetByID(It.IsAny<int>())).ReturnsAsync(employee);
+            _payrollRepositoryMock.Setup(p => p.Create(It.IsAny<PayStatement>())).ReturnsAsync(new Api.BusinessLogic.Models.Response.CreateObjectResponse(Guid.NewGuid()));
 
             var result = await _sut.Handle(request, default(CancellationToken));
 

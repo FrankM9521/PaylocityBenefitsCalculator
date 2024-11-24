@@ -1,12 +1,13 @@
 ﻿using Api.BusinessLogic.Calculations.Interfaces;
+using Api.BusinessLogic.Calculators;
 using Api.BusinessLogic.Models;
 
 namespace Api.BusinessLogic.Calculations.Deductions
 {
-    public class StandardBenfitDeductionCalculator : BaseDeductionCalculator, IDeduction
+    public class StandardBenfitDeductionCalculator : BaseDeductionCalculator, ICalculate
     {
         public StandardBenfitDeductionCalculator(ICalculationsLibrary library) : base(library) { }
-        public async Task<PayStatement> CalculateDeduction(PayStatement payStatement)
+        public async Task<PayStatement> Calculate(PayStatement payStatement)
         {
             var baseDeduction = _calculationsLibrary.GetBaseDeduction(payStatement);
 

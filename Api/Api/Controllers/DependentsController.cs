@@ -41,10 +41,10 @@ public class DependentsController : BenefitsCalculatorAPIControllerBase
     [HttpPost("")]
     public async Task<IActionResult> Post(GetDependentDto dependent)
     {
-        var result = await _dependentService.Post(dependent.ToModel());
+        var result = await _dependentService.Create(dependent.ToModel());
 
         return result.Success
-            ? CreatedAt<GetDependentDto>(result.newId.Value, Request.Path.Value)
+            ? CreatedAt<GetDependentDto>((int) result.newId, Request.Path.Value)
             : MyBadRequest<GetDependentDto>(result.ErrorMessage);
     }
 }

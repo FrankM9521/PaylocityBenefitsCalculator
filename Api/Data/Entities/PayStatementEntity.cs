@@ -15,6 +15,7 @@
         public int EmployeeID { get; set; }
         public decimal GrossPay { get; set; }
         public decimal NetPay { get; set; }
+        public int NumberOfDependents { get; set; } 
         public Dictionary<DeductionTypes, decimal> Deductions { get; } = new Dictionary<DeductionTypes, decimal>();
         public void AddDeduction(DeductionTypes deductionType, decimal amount)
         {
