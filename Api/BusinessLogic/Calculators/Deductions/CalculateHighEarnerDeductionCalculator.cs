@@ -8,7 +8,7 @@ namespace Api.BusinessLogic.Calculations.Deductions
     {
         public CalculateHighEarnerDeductionCalculator(ICalculationsLibrary calculationsLibrary) : base(calculationsLibrary) { }
 
-        public async Task<PayStatement> Calculate(PayStatement payStatement)
+        public async Task<CalculatePayStatement> Calculate(CalculatePayStatement payStatement)
         {
             await payStatement.AddDeduction(DeductionTypes.HighEarnerBenefitsFee, _calculationsLibrary.GetHighEarnersDeduction(payStatement));
 

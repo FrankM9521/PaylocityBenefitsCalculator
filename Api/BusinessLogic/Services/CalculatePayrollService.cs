@@ -26,7 +26,7 @@ namespace Api.BusinessLogic.Services
         {
             var deductionCalculators = GetDeductionCalculators(request.PreviousPayStatements?.Count() > 0 ? request.PreviousPayStatements.Count() + 1 : 1);
            
-            var payStatement = new PayStatement(request.PreviousPayStatements, request.Employee)
+            var payStatement = new CalculatePayStatement(request.PreviousPayStatements, request.Employee)
             {
                 GrossPay = Math.Round(request.Employee.Salary / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2)
             };

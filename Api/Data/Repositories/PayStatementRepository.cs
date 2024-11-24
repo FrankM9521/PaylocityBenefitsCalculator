@@ -5,7 +5,7 @@ using Api.Data.Repositories.Interfaces;
 
 namespace Api.Data.Repositories
 {
-    public interface IPayStatementRepository : ICreateRepository<PayStatement> {  }
+    public interface IPayStatementRepository : ICreateRepository<CalculatePayStatement> {  }
 
     public class PayStatementRepository : RepositoryBase,  IPayStatementRepository
     {
@@ -15,14 +15,14 @@ namespace Api.Data.Repositories
             _dependentRepository = dependentRepository;
         }
 
-        public async Task<CreateObjectResponse> Create(PayStatement value)
+        public async Task<CreateObjectResponse> Create(CalculatePayStatement value)
         {
             DataComtext.Add(value.ToEntity());
 
             return await Task.FromResult(new CreateObjectResponse((object)value.ID));
         }
 
-        public async Task<IEnumerable<PayStatement>?> GetByEmployeeID(int employeeID)
+        public async Task<IEnumerable<CalculatePayStatement>?> GetByEmployeeID(int employeeID)
         {
             var dependents = await _dependentRepository.GetByEmployeeID(employeeID);
 

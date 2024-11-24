@@ -14,7 +14,7 @@ namespace Api.BusinessLogic.Calculations
             _benefitsConfig = benefitsConfig;
         }   
 
-        public decimal GetHighEarnersDeduction(PayStatement payStatement)
+        public decimal GetHighEarnersDeduction(CalculatePayStatement payStatement)
         {
             var yearlyGrossPay = GetEstimatedGrossYearlyPay(payStatement);
             var deduction = 0M;
@@ -32,7 +32,7 @@ namespace Api.BusinessLogic.Calculations
             return deduction;
         }
 
-        public decimal GetDependentDeduction(PayStatement payStatement)
+        public decimal GetDependentDeduction(CalculatePayStatement payStatement)
         {
             var numberOfDependents = payStatement.Employee.Dependents.Count();
             var deduction = Math.Round(numberOfDependents * _benefitsConfig.DEPENDENT_BENFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
@@ -45,17 +45,17 @@ namespace Api.BusinessLogic.Calculations
             return deduction;
         }
 
-        public decimal GetBaseDeduction(PayStatement payStatement)
+        public decimal GetBaseDeduction(CalculatePayStatement payStatement)
         {
             return Math.Round(_benefitsConfig.EMPLOYEE_BENEFITS_BASE_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
-        public decimal GetSeniorDeduction(PayStatement payStatement)
+        public decimal GetSeniorDeduction(CalculatePayStatement payStatement)
         {
             return Math.Round(_benefitsConfig.SENIOR_BENEFITS_MONTHLY_DEDUCTION_AMT * 12 / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
         }
 
-        private decimal GetEstimatedGrossYearlyPay(PayStatement payStatement)
+        private decimal GetEstimatedGrossYearlyPay(CalculatePayStatement payStatement)
         {
             var estGrossPay = 0M;
        

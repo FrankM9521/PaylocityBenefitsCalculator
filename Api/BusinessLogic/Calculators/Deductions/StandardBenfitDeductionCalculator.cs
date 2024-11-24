@@ -7,7 +7,7 @@ namespace Api.BusinessLogic.Calculations.Deductions
     public class StandardBenfitDeductionCalculator : BaseDeductionCalculator, ICalculate
     {
         public StandardBenfitDeductionCalculator(ICalculationsLibrary library) : base(library) { }
-        public async Task<PayStatement> Calculate(PayStatement payStatement)
+        public async Task<CalculatePayStatement> Calculate(CalculatePayStatement payStatement)
         {
             var baseDeduction = _calculationsLibrary.GetBaseDeduction(payStatement);
 

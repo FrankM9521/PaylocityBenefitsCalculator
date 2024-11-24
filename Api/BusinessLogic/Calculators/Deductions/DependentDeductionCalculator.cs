@@ -7,7 +7,7 @@ namespace Api.BusinessLogic.Calculations.Deductions
     public class DependentDeductionCalculator : BaseDeductionCalculator, ICalculate
     {
         public DependentDeductionCalculator(ICalculationsLibrary library) : base(library) { }
-        public async Task<PayStatement> Calculate(PayStatement payStatement)
+        public async Task<CalculatePayStatement> Calculate(CalculatePayStatement payStatement)
         {
             await payStatement.AddDeduction(DeductionTypes.DependentBenefitsFee, _calculationsLibrary.GetDependentDeduction(payStatement));
 

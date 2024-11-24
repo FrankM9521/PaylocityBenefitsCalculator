@@ -2,17 +2,18 @@
 
 namespace Api.BusinessLogic.Models
 {
-    public class PayStatement
+    public class CalculatePayStatement
     {
-        public PayStatement() 
+        public CalculatePayStatement() 
         {
             PreviousPayrollStatements = new List<CalculatePayrollStatement>();
             Employee = new Employee();
         }
-        public PayStatement(IEnumerable<CalculatePayrollStatement>? previousPayrollStatements, Employee employee) 
+        public CalculatePayStatement(IEnumerable<CalculatePayrollStatement>? previousPayrollStatements, Employee employee) 
         { 
             PreviousPayrollStatements = previousPayrollStatements == null ? new List<CalculatePayrollStatement>() : previousPayrollStatements;
             Employee = employee;
+            Order = previousPayrollStatements == null ? 1 :  previousPayrollStatements.Count() + 1;
         }
 
         public Guid ID { get; init; } = Guid.NewGuid();
@@ -24,7 +25,6 @@ namespace Api.BusinessLogic.Models
         public decimal TotalDeductions { get {  return Deductions.Values.Sum(d => d);  } }
         public Dictionary<DeductionTypes, decimal> Deductions { get; } = new Dictionary<DeductionTypes, decimal>();
         public IEnumerable<CalculatePayrollStatement> PreviousPayrollStatements { get;  }
-        public int NumberOfDependents { get; set; }
         public async Task AddDeduction(DeductionTypes deductionType, decimal amount)
         {
             // assuming 1 to 1 deduction type to value

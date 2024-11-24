@@ -7,7 +7,7 @@ namespace Api.BusinessLogic.Mappers
 {
     public static class PayStatementMapper
     {
-        public static PayStatementEntity ToEntity(this PayStatement value)
+        public static PayStatementEntity ToEntity(this CalculatePayStatement value)
         {
             var payStatement = new PayStatementEntity
             {
@@ -26,14 +26,13 @@ namespace Api.BusinessLogic.Mappers
             return payStatement;
         }
 
-        public static PayStatement ToModel(this PayStatementEntity value)
+        public static CalculatePayStatement ToModel(this PayStatementEntity value)
         {
-            var payStatement = new PayStatement
+            var payStatement = new CalculatePayStatement()
             {
                 GrossPay = value.GrossPay,
                 ID = value.ID,
-                Order = value.Order,
-                NumberOfDependents = value.NumberOfDependents
+                Order = value.Order
             };
 
             foreach (var item in value.Deductions)

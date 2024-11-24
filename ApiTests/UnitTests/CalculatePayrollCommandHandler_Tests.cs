@@ -63,7 +63,7 @@ namespace ApiTests.UnitTests
             var employee = GetEmployee(request.EmployeeID, salary, numberOfDependents, age);
 
             _employeeServiceMock.Setup(s => s.GetByID(It.IsAny<int>())).ReturnsAsync(employee);
-            _payrollRepositoryMock.Setup(p => p.Create(It.IsAny<PayStatement>())).ReturnsAsync(new Api.BusinessLogic.Models.Response.CreateObjectResponse(Guid.NewGuid()));
+            _payrollRepositoryMock.Setup(p => p.Create(It.IsAny<CalculatePayStatement>())).ReturnsAsync(new Api.BusinessLogic.Models.Response.CreateObjectResponse(Guid.NewGuid()));
 
             var result = await _sut.Handle(request, default(CancellationToken));
 

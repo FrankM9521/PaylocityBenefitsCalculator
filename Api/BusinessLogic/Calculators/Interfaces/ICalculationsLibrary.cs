@@ -8,9 +8,9 @@ namespace Api.BusinessLogic.Calculations.Interfaces
 
     public interface ICalculationsLibrary
     {
-        decimal GetSeniorDeduction(PayStatement payStatement);
-        decimal GetHighEarnersDeduction(PayStatement payStatement);
-        decimal GetDependentDeduction(PayStatement payStatement);
-        decimal GetBaseDeduction(PayStatement payStatement);
+        decimal GetSeniorDeduction(CalculatePayStatement payStatement);
+        decimal GetHighEarnersDeduction(CalculatePayStatement payStatement);
+        decimal GetDependentDeduction(CalculatePayStatement payStatement);
+        decimal GetBaseDeduction(CalculatePayStatement payStatement);
     }
 }
