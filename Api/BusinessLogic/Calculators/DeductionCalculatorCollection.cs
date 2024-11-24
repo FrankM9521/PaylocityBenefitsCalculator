@@ -10,10 +10,10 @@ namespace Api.BusinessLogic.Calculations
         {
             _deductions = new List<IDeduction>
             {
-                new CalculateStandardBenfitDeduction(library),
-               new CalculateDependentDeductions(library),
-               new CalculateHighEarnerDeduction(library),
-               new CalculateSeniorBenefitsDeduction(library)
+                new StandardBenfitDeductionCalculator(library),
+               new DependentDeductionCalculator(library),
+               new CalculateHighEarnerDeductionCalculator(library),
+               new SeniorBenefitsDeductionCalculator(library)
             };
         }
 

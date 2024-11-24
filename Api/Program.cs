@@ -1,7 +1,6 @@
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;
-using Api.BusinessLogic.Factories;
 using Api.BusinessLogic.Models;
 using Api.Data.Repositories;
 using Api.BusinessLogic.Services;
@@ -39,13 +38,13 @@ internal class Program
 
         builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
         builder.Services.AddScoped<IDbContextAccessor, DbContextAccessor>();
-        builder.Services.AddScoped<IValidationCollection<Employee>, EmployeeValidationCollection>();
-        builder.Services.AddScoped<IValidationCollection<Dependent>, DependentValidationCollection>();
+        builder.Services.AddTransient<IValidationCollection<Employee>, EmployeeValidationCollection>();
+        builder.Services.AddTransient<IValidationCollection<Dependent>, DependentValidationCollection>();
         builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddScoped<IEmployeeService, EmployeeService>();
         builder.Services.AddScoped<IDependentRepository, DependentRepository>();
         builder.Services.AddScoped<IDependentService, DependentService>();
-        builder.Services.AddScoped<IFactory<CreatePayStatmentResponse, CreatePayStatementRequest>, PayStatementFactory>();
+        builder.Services.AddTransient<ICalculatePayrollService, CalculatePayrollService>();
 
         var app = builder.Build();
 

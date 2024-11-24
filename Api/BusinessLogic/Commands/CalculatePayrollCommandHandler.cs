@@ -1,9 +1,9 @@
-﻿using Api.BusinessLogic.Factories;
-using Api.BusinessLogic.Mappers;
+﻿using Api.BusinessLogic.Mappers;
 using Api.BusinessLogic.Models;
+using Api.BusinessLogic.Models.Request;
 using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
-using Api.Data.Repositories;
+using Api.Data;
 using MediatR;
 
 namespace Api.BusinessLogic.Commands
@@ -12,10 +12,10 @@ namespace Api.BusinessLogic.Commands
     {
         private readonly IValidationCollection<Employee> _employeeValidationCollection;
         private readonly IEmployeeService _employeeService;
-        private readonly IFactory<CreatePayStatmentResponse, CreatePayStatementRequest> _payStatementFactory;
+        private readonly ICalculatePayrollService _payStatementFactory;
         public CalculatePayrollCommandHandler(IEmployeeService employeeService,
-             IValidationCollection<Employee> employeeValidationCollection,
-            IFactory<CreatePayStatmentResponse, CreatePayStatementRequest> payStatementFactory)
+            IValidationCollection<Employee> employeeValidationCollection,
+            ICalculatePayrollService payStatementFactory)
         {
             _employeeService = employeeService;
             _payStatementFactory = payStatementFactory;
@@ -35,7 +35,7 @@ namespace Api.BusinessLogic.Commands
             if (validationResult.Success)
             {
                 var previousStatements = DB.PayStatements.Select(pay => pay.ToModel(employee.Dependents.Count()));
-                var createPayStatementRequest = new CreatePayStatementRequest(employee, previousStatements);
+                var createPayStatementRequest = new CalculatePayrollRequest(employee, previousStatements);
                 var createResult = await _payStatementFactory.Create(createPayStatementRequest);
 
                 return new CalculatePayrollCommandResponse(createResult.Employee, createResult.PayCheck);

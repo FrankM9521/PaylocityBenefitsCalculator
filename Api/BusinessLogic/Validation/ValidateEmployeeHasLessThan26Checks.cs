@@ -1,5 +1,5 @@
 ﻿using Api.BusinessLogic.Models;
-using Api.Data.Repositories;
+using Api.Data;
 
 namespace Api.BusinessLogic.Validation
 {

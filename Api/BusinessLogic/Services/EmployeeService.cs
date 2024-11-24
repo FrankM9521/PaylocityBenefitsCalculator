@@ -12,7 +12,7 @@ namespace Api.BusinessLogic.Services
 
     public interface IAPIPost<T>
     {
-        Task<CreateResponse> Post(Dependent newDependent);
+        Task<CreateObjectResponse> Post(Dependent newDependent);
     }
 
     public interface IEmployeeService : IAPIGet<Employee> { }

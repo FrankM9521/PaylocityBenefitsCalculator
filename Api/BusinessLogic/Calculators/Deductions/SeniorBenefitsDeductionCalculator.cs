@@ -3,9 +3,9 @@ using Api.BusinessLogic.Models;
 
 namespace Api.BusinessLogic.Calculations.Deductions
 {
-    public class CalculateSeniorBenefitsDeduction : CalculateDeductionBase, IDeduction
+    public class SeniorBenefitsDeductionCalculator : BaseDeductionCalculator, IDeduction
     {
-        public CalculateSeniorBenefitsDeduction(ICalculationsLibrary library) : base(library) { }
+        public SeniorBenefitsDeductionCalculator(ICalculationsLibrary library) : base(library) { }
         public async Task<PayStatement> CalculateDeduction(PayStatement payStatement)
         {
             var deduction = 0M;

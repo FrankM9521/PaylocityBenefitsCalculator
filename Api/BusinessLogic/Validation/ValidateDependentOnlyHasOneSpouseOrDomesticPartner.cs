@@ -1,6 +1,6 @@
 ﻿using Api.BusinessLogic.Models;
+using Api.Data;
 using Api.Data.Entities;
-using Api.Data.Repositories;
 
 namespace Api.BusinessLogic.Validation
 {

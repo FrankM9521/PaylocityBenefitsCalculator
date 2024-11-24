@@ -28,7 +28,7 @@ namespace Api.BusinessLogic.Services
             return result;
         }
 
-        public async Task<CreateResponse> Post(Dependent newDependent)
+        public async Task<CreateObjectResponse> Post(Dependent newDependent)
         {
             // rules are being checked at the repository layer, they really should be injected, but time constraints
             return await _dependentRepository.Create(newDependent);

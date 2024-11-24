@@ -1,10 +1,9 @@
 ﻿using Api.BusinessLogic.Calculations.Interfaces;
 using Api.BusinessLogic.Models;
-using Api.Data.Repositories;
+using Api.Data;
 
 namespace Api.BusinessLogic.Calculations
 {
-
     public class StandardCalculationLibrary : ICalculationsLibrary
     {
         public decimal GetHighEarnersDeduction(PayStatement payStatement)

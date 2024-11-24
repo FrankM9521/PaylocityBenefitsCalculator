@@ -4,6 +4,6 @@ namespace Api.Data.Repositories
 {
     public interface ICreateRepositoryBase<T>
     {
-        Task<CreateResponse> Create(T value);
+        Task<CreateObjectResponse> Create(T value);
     }
 }

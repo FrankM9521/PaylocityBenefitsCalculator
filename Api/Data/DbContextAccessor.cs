@@ -1,6 +1,4 @@
-﻿using Api.Data.Repositories;
-
-namespace Api.Data
+﻿namespace Api.Data
 {
     public interface IDbContextAccessor
     {

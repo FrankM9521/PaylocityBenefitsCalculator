@@ -47,7 +47,7 @@ namespace Api.Data.Repositories
             return await Task.FromResult(DB.Dependents.Where(dep => dep.EmployeeId == employeeID).Select(dep => dep.ToDomain()))
                 ?? new List<Dependent>();
         }
-        public async Task<CreateResponse> Create(Dependent newDependent)
+        public async Task<CreateObjectResponse> Create(Dependent newDependent)
         {
             var result = await _dependentValidationCollection.Validate(newDependent);
 
@@ -58,11 +58,11 @@ namespace Api.Data.Repositories
 
                 DB.Add(newDependent.ToEntity());
 
-                return new CreateResponse(newDependent.Id);
+                return new CreateObjectResponse(newDependent.Id);
             }
             else
             {
-                return new CreateResponse(null, false, HttpStatusCode.BadRequest, result.ErrorMessage);
+                return new CreateObjectResponse(null, false, HttpStatusCode.BadRequest, result.ErrorMessage);
             }
         }
 

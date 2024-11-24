@@ -26,9 +26,9 @@ namespace Api.BusinessLogic.Mappers
             return payStatement;
         }
 
-        public static CalculatePayrollPayStatement ToModel(this PayStatementEntity value, int numberOfDependents)
+        public static CalculatePayrollStatement ToModel(this PayStatementEntity value, int numberOfDependents)
         {
-            var payStatement = new CalculatePayrollPayStatement(value.ID, value.Order, value.GrossPay, value.NetPay, numberOfDependents, value.Deductions.ToModel());
+            var payStatement = new CalculatePayrollStatement(value.ID, value.Order, value.GrossPay, value.NetPay, numberOfDependents, value.Deductions.ToModel());
 
             return payStatement;
         }

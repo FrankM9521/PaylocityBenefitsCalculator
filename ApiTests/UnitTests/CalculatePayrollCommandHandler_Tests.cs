@@ -9,10 +9,9 @@ using Api.BusinessLogic.Commands;
 using Api.Data.Entities;
 using Api.BusinessLogic.Mappers;
 using Api.BusinessLogic.Models;
-using Api.Data.Repositories;
 using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
-using Api.BusinessLogic.Factories;
+using Api.Data;
 
 namespace ApiTests.UnitTests
 {
@@ -26,7 +25,8 @@ namespace ApiTests.UnitTests
         {
             _employeeValidationMock.Setup(x => x.Validate(It.IsAny<Employee>())).ReturnsAsync(new ValidationResponse());
 
-            _sut = new CalculatePayrollCommandHandler(_employeeServiceMock.Object, _employeeValidationMock.Object, new PayStatementFactory());
+       
+           _sut = new CalculatePayrollCommandHandler(_employeeServiceMock.Object, _employeeValidationMock.Object, new CalculatePayrollService());
 
         }
 
