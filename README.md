@@ -7,11 +7,6 @@ The Application runs, all end points are viewable in swagger.
 *******************************************************************************************
 * Testing																																	*
 ********************************************************************************************
-NOTE - The INTEGRATION TESTS ARE FALKEY. They will SOMETIMES fail. I don't have time 
-			to figure it out, but tests are running in parallel even though they are in the same collection. 
-			TO GUARANTEE AN INTEGRATION TEST WILL PASS, run it individually. 
-			If you run them as a group sometimes they fail. I think  it's ny mock static DB. The unit test are fine
-
 I was having an issue with HttpClient, so in the integration tests I tested at the controller level. 
 
 I completed the Integration Tests and added one more. However my primary focus was on 
