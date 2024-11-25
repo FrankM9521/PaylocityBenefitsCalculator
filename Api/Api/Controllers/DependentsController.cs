@@ -1,6 +1,6 @@
 ﻿using Api.Api.Dtos.Dependent;
 using Api.BusinessLogic.Mappers;
-using Api.BusinessLogic.Services;
+using Api.BusinessLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 

@@ -11,7 +11,7 @@ namespace Api.Data.Repositories
     /// </summary>
     public class EmployeeRepository : RepositoryBase, IEmployeeRepository
     {
-        public EmployeeRepository(IDbContextAccessor dbContextAccessor) : base(dbContextAccessor) { }
+        public EmployeeRepository( IDbContextAccessor dbContextAccessor) : base(dbContextAccessor) { }
         public async Task<IEnumerable<Employee>> Get()
         {
             return await Task.FromResult(DataComtext.Employees.Select(s => s.ToDomain()).AsEnumerable());

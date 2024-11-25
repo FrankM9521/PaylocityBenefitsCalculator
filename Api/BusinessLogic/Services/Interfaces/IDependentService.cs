@@ -1,7 +1,6 @@
 ﻿using Api.BusinessLogic.Models;
-using Api.BusinessLogic.Services.Interfaces;
 
-namespace Api.BusinessLogic.Services
+namespace Api.BusinessLogic.Services.Interfaces
 {
     public interface IDependentService : IAPIGet<Dependent, int>, IAPIPost<Dependent> { }
 }

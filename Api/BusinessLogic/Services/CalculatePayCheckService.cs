@@ -6,7 +6,9 @@ using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.CalculatePayroll;
 using Api.BusinessLogic.Models.Request;
 using Api.BusinessLogic.Models.Response;
+using Api.BusinessLogic.Services.Interfaces;
 using Api.Data.Repositories.Interfaces;
+using MediatR;
 
 namespace Api.BusinessLogic.Services
 {
@@ -27,7 +29,7 @@ namespace Api.BusinessLogic.Services
            
             var payStatement = new CalculatePayCheck(request.PreviousPayStatements, request.Employee)
             {
-                GrossPay = Math.Round(request.Employee.Salary / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2)
+                GrossPay = GetGrossPay(request.Employee.Salary, request.PreviousPayStatements)
             };
 
             foreach (var calculator in deductionCalculators.Deductions)
@@ -41,37 +43,21 @@ namespace Api.BusinessLogic.Services
                     new CalculatePayrollEmployee(request.Employee.FirstName, request.Employee.LastName, request.Employee.Salary, request.Employee.DateOfBirth),
                     new CalculatePayrollStatement(payStatement.ID, payStatement.Order, payStatement.GrossPay, payStatement.NetPay, payStatement.Deductions.Count(), payStatement.Deductions));
         }
+
+        private decimal GetGrossPay(decimal salary, IEnumerable<PayCheck>? previousPayChecks)
+        {
+            var payPeriod = ( previousPayChecks?.Count() ?? 0)  + 1;
+
+            return payPeriod == _benefitsConfig.PAY_PERIODS_PER_YEAR
+                ? salary - previousPayChecks?.Sum(pay => pay.GrossPay) ?? 0
+                : Math.Round(salary / _benefitsConfig.PAY_PERIODS_PER_YEAR, 2);
+        }
+
         private IDeductionCalculatorCollection GetDeductionCalculators(int payCheckPeriod)
         {
             var calculatorLibraryType = _calculationLibraryFactory.Create(payCheckPeriod);
 
             return new DeductionCalculatorCollection(calculatorLibraryType, _benefitsConfig);
-        }
-    }
-
-
-    public interface ICalculationLibraryFactory
-    {
-        public ICalculationsLibrary Create(int payCheckPeriod);
-    }
-    public class CalculationLibraryFactory : ICalculationLibraryFactory
-    {
-        private readonly IBenefitsConfig _benefitsConfig;
-        public CalculationLibraryFactory(IBenefitsConfig benefitsConfig)
-        {
-            _benefitsConfig = benefitsConfig;
-        }
-        public ICalculationsLibrary Create(int payCheckPeriod)
-        {
-            switch(payCheckPeriod)
-            {
-                case var exp when payCheckPeriod < _benefitsConfig.PAY_PERIODS_PER_YEAR:
-                    return new StandardCalculationLibrary(_benefitsConfig);
-                case var exp when payCheckPeriod == _benefitsConfig.PAY_PERIODS_PER_YEAR:
-                    return new LastPayCheckOfYearCalculator(_benefitsConfig);
-                default:
-                    throw new NotImplementedException("Calculator Not Implemented");
-            }
         }
     }
 }

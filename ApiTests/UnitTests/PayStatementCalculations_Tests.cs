@@ -74,7 +74,7 @@ namespace ApiTests.UnitTests
         {
             return standard 
                 ? new StandardCalculationLibrary(new BenefitsConfig())
-                : new LastPayCheckOfYearCalculator(new BenefitsConfig());
+                : new LastPayCheckOfYearCalculationLibrary(new BenefitsConfig());
         }
     }
 }

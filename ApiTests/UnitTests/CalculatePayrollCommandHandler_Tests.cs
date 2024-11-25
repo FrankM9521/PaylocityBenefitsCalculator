@@ -16,6 +16,7 @@ using System;
 using Api.Api.Utility;
 using Api.Data.Repositories.Interfaces;
 using Api.BusinessLogic.Services.Interfaces;
+using Api.Data.Repositories;
 namespace ApiTests.UnitTests
 {
     public class CalculatePayrollCommandHandler_Tests
@@ -36,6 +37,9 @@ namespace ApiTests.UnitTests
                 _employeeValidationMock.Object,
                 new CalculatePayCheckService(_payCheckRepositoryMock.Object, new BenefitsConfig(), _calculationLibraryFactory),
                 _payCheckServiceMock.Object);
+
+            var dbContextAccessor = new DbContextAccessor();
+            var dependentRepository = new DependentRepository(new DependentValidationCollection(dbContextAccessor), dbContextAccessor);
         }
 
         [Theory]

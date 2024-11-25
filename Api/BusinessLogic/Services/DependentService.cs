@@ -1,5 +1,6 @@
 ﻿using Api.BusinessLogic.Models;
 using Api.BusinessLogic.Models.Response;
+using Api.BusinessLogic.Services.Interfaces;
 using Api.Data.Repositories.Interfaces;
 
 namespace Api.BusinessLogic.Services
