@@ -55,12 +55,12 @@ namespace Api.Data
 
         public IEnumerable<DependentEntity> Dependents
         {
-            get { return (_dependents ?? (_dependents = new Dictionary<int, List<DependentEntity>>())).SelectMany(v => v.Value).ToList().AsReadOnly(); }
+            get { return (_dependents ?? (_dependents = new Dictionary<int, List<DependentEntity>>())).SelectMany(v => v.Value).ToList(); }
         }
 
         public IEnumerable<PayCheckEntity> PayStatements
         {
-            get { return (_payStatements ?? (_payStatements = new List<PayCheckEntity>())).AsReadOnly(); }
+            get { return (_payStatements ?? (_payStatements = new List<PayCheckEntity>())); }
         }
 
         public void SetData(List<EmployeeEntity> employees, List<DependentEntity> dependents)
