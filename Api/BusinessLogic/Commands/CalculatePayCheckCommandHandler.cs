@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Api.BusinessLogic.Commands
 {
+    /// <summary>
+    /// Manages a service that creates a Pay Check
+    /// </summary>
     public class CalculatePayCheckCommandHandler : IRequestHandler<CalculatePayCheckCommand, CalculatePayCheckCommandResponse>
     {
         private readonly IValidationCollection<Employee> _employeeValidationCollection;
@@ -23,6 +26,13 @@ namespace Api.BusinessLogic.Commands
             _employeeValidationCollection = employeeValidationCollection;
             _payCheckService = payCheckService;
         }
+
+        /// <summary>
+        /// Creates a Pay Check
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<CalculatePayCheckCommandResponse> Handle(CalculatePayCheckCommand request, CancellationToken cancellationToken)
         {
             var employee = await _employeeService.GetByID(request.EmployeeID);
@@ -37,8 +47,7 @@ namespace Api.BusinessLogic.Commands
             if (validationResult.Success)
             {
                 var previousStatements = await _payCheckService.GetByEmployeeID(request.EmployeeID);
-                var createPayStatementRequest = new CalculatePayrollRequest(employee, previousStatements);
-                var createResult = await _payStatementFactory.Calculate(createPayStatementRequest);
+                var createResult = await _payStatementFactory.Calculate(new CalculatePayrollRequest(employee, previousStatements));
 
                 return new CalculatePayCheckCommandResponse(createResult.Employee, createResult.PayCheck);
             }

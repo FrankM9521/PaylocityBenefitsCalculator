@@ -15,8 +15,13 @@ namespace Api.BusinessLogic.Services
             _dependentRepository = dependentRepository;
         }
 
+        /// <summary>
+        /// Gets Employee
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Employee>> GetAll()
         {
+            // because why not - calls to  get Employee and Dependents at the same time
             var employeeResultTask = Task.Run(() => _employeeRepository.Get());
             var dependentResultTask = Task.Run(() => _dependentRepository.Get());
 

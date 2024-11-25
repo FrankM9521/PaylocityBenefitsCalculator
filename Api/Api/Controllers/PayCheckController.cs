@@ -20,6 +20,11 @@ namespace Api.Api.Controllers
             _payCheckService = payCheck;
         }
 
+        /// <summary>
+        /// Gets all Pay Checks for the given employee
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("~/api/employees/{employeeId:int}/paycheck")]
         public async Task<IActionResult> GetByEmployeeID([FromRoute] int employeeId)
@@ -29,11 +34,15 @@ namespace Api.Api.Controllers
             return MyOk(result);
         }
 
-
-        [SwaggerOperation(Summary = "Calculates an Employees Bi-Weekly Pay")]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [SwaggerOperation(Summary = "Calculates an Employees Pay Check. This is an MVP and can only hold the first year of paychecks. After all have been created, will return 400 Bad Request ")]
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<CalculatePayCheckCommandResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<CalculatePayCheckCommandResponse>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<CalculatePayCheckCommandResponse>), StatusCodes.Status400BadRequest)]
         [Route("CalculatePayroll")]
         public async Task<IActionResult> Calculate([FromBody] CalculatePayCheckCommand request)
         {

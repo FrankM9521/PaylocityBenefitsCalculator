@@ -4,6 +4,9 @@ using Entities = Api.Data.Entities;
 
 namespace Api.BusinessLogic.Mappers
 {
+    /*
+ * Bolier Plate - This or AutoMapper
+ */
     public static class PayCheckMapper
     {
         public static Entities.PayCheckEntity ToEntity(this PayCheck value)

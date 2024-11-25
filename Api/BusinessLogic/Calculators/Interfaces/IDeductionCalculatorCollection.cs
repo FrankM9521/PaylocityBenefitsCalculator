@@ -2,7 +2,7 @@
 
 namespace Api.BusinessLogic.Calculations.Interfaces
 {
-    public interface IDeductionCalculatorCollection
+    public interface ICalculatorCollection
     {
         IEnumerable<ICalculate> Deductions { get; }
     }

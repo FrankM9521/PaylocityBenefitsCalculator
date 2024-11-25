@@ -2,13 +2,17 @@
 using Api.BusinessLogic.Calculations.Interfaces;
 using Api.BusinessLogic.Models;
 
-namespace Api.BusinessLogic.Calculations
+namespace Api.BusinessLogic.Calculators.CalculationLibraries
 {
+    /// <summary>
+    /// Calculates the last paycheck by looking at what was distributed in the previous checks
+    /// and subtracting that from the yearly amount
+    /// </summary>
     public class LastPayCheckOfYearCalculationLibrary : ICalculationsLibrary
     {
         private IBenefitsConfig _benefitsConfig;
-        public LastPayCheckOfYearCalculationLibrary(IBenefitsConfig benefitsConfig) 
-        { 
+        public LastPayCheckOfYearCalculationLibrary(IBenefitsConfig benefitsConfig)
+        {
             _benefitsConfig = benefitsConfig;
         }
 

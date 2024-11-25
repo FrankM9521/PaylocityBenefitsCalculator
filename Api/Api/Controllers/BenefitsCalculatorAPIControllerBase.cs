@@ -4,9 +4,12 @@ using System.Net;
 
 namespace Api.Api.Controllers;
 
+/// <summary>
+/// Base class to wrap our API response
+/// This could be done better through Middleware 
+/// </summary>
 public abstract class BenefitsCalculatorAPIControllerBase : ControllerBase
 {
-
     public IActionResult MyOk<T>(T data)
     {
         return Ok(new ApiResponse<T>(data));

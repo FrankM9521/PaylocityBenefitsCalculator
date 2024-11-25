@@ -2,8 +2,11 @@
 using Api.BusinessLogic.Calculations.Interfaces;
 using Api.BusinessLogic.Models;
 
-namespace Api.BusinessLogic.Calculations
+namespace Api.BusinessLogic.Calculators.CalculationLibraries
 {
+    /*
+     * Payroll calculators used on every check but the last
+     */ 
     public class StandardCalculationLibrary : ICalculationsLibrary
     {
         protected readonly IBenefitsConfig _benefitsConfig;
@@ -11,7 +14,7 @@ namespace Api.BusinessLogic.Calculations
         public StandardCalculationLibrary(IBenefitsConfig benefitsConfig)
         {
             _benefitsConfig = benefitsConfig;
-        }   
+        }
 
         public virtual decimal GetHighEarnersDeduction(CalculatePayCheck payStatement)
         {
@@ -57,7 +60,7 @@ namespace Api.BusinessLogic.Calculations
         private decimal GetEstimatedGrossYearlyPay(CalculatePayCheck payStatement)
         {
             var estGrossPay = 0M;
-       
+
             if (payStatement.PreviousPayChecks.Count() > 0)
             {
                 var ytdGrossPay = payStatement.PreviousPayChecks.Sum(pay => pay.GrossPay) + payStatement.GrossPay;

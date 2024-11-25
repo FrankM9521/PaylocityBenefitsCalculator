@@ -2,10 +2,8 @@
 using Api.BusinessLogic.Models;
 using Api.Data.Entities;
 using Api.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static ApiTests.UnitTests.PayStatementCalculations_Tests;
@@ -13,14 +11,14 @@ using Api.BusinessLogic.Services.Interfaces;
 using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
 using Api.Data.Repositories.Interfaces;
-using Moq;
-using Api.Api.Controllers;
 using Api.Api.Utility;
 using Api.Data.Repositories;
 using Api.BusinessLogic.Mappers;
+using Api.BusinessLogic.Factories;
 
 namespace ApiTests.IntegrationTests
 {
+    [Collection("CalculatePayCheckCommanHandler")]
     public class CalculatePayCheckCommanHandler_IntegrationTests
     {
         private CalculatePayCheckCommandHandler _sut;
@@ -73,6 +71,25 @@ namespace ApiTests.IntegrationTests
             Assert.Equal(dependentBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee]));
             Assert.Equal(highEarnerBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee]));
             Assert.Equal(seniorBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee]));
+        }
+
+        [Fact]
+        public async Task When26ChecksExist_ItDoesNotAddAnother()
+        {
+            _dbContextAccessor.DataBase.ClearPayChecks();
+            var request = new CalculatePayCheckCommand(1);
+            var employee = GetEmployee(request.EmployeeID, 60000, 0);
+            var checks = new List<CalculatePayCheckCommandResponse>();
+
+            for (int i = 0; i < 26; i++)
+            {
+                checks.Add(await _sut.Handle(request, default));
+            }
+
+            var checkResult = await _sut.Handle(request, default);
+
+            Assert.True(checks.All(c => c.Success));
+            Assert.False(checkResult.Success);
         }
 
         private static Employee GetEmployee(int id, decimal salary, int numberOfDependents, int age = 30)

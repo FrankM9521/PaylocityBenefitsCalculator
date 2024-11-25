@@ -18,6 +18,7 @@ namespace ApiTests.IntegrationTests;
 /*
  I was having issues with Http Client and web socket issues, so I tested at the controller level
  */
+[Collection("CalculatePayCheckCommanHandler")]
 public class DependentIntegrationTests 
 {
     private readonly DependentsController _dependentsController;
@@ -32,7 +33,6 @@ public class DependentIntegrationTests
     }
 
     [Fact]
-    //task: make test pass
     public async Task WhenAskedForAllDependents_ShouldReturnAllDependents()
     {
         var data = DefaultData.Dependents.Select(d => d.ToDomain()).ToList().Select(d => d.ToDto());
@@ -51,7 +51,6 @@ public class DependentIntegrationTests
     }
 
     [Fact]
-    //task: make test pass
     public async Task WhenAskedForADependent_ShouldReturnCorrectDependent()
     {
         var expectedDependent = DefaultData.Dependents.Select(d => d.ToDomain()).ToList().Select(d => d.ToDto()).First();

@@ -39,18 +39,26 @@ namespace Api.Data
             }
         }
 
+        public void ClearPayChecks()
+        {
+            if (_payStatements != null)
+            {
+                _payStatements.Clear();
+            }
+        }
+
         // fake data sets, read only
-        public IReadOnlyList<EmployeeEntity> Employees
+        public IEnumerable<EmployeeEntity> Employees
         {
             get { return (_employees ??= new List<EmployeeEntity>()).AsReadOnly(); }
         }
 
-        public IReadOnlyList<DependentEntity> Dependents
+        public IEnumerable<DependentEntity> Dependents
         {
             get { return (_dependents ?? (_dependents = new Dictionary<int, List<DependentEntity>>())).SelectMany(v => v.Value).ToList().AsReadOnly(); }
         }
 
-        public IReadOnlyList<PayCheckEntity> PayStatements
+        public IEnumerable<PayCheckEntity> PayStatements
         {
             get { return (_payStatements ?? (_payStatements = new List<PayCheckEntity>())).AsReadOnly(); }
         }

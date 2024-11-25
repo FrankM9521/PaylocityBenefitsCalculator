@@ -4,6 +4,9 @@ using Api.Data.Entities;
 
 namespace Api.BusinessLogic.Mappers
 {
+    /*
+     * Bolier Plate - This or AutoMapper
+     */
     public static class DependentMappper
     {
         public static Dependent ToDomain(this DependentEntity value)

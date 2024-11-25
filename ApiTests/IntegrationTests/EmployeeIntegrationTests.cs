@@ -20,6 +20,7 @@ using Xunit;
 
 namespace ApiTests.IntegrationTests;
 
+[Collection("CalculatePayCheckCommanHandler")]
 public class EmployeeIntegrationTests 
 {
     private readonly EmployeesController _employeesController;

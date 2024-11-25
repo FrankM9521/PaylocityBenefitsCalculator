@@ -5,7 +5,7 @@ using Api.BusinessLogic.Calculators;
 
 namespace Api.BusinessLogic.Calculations
 {
-    public class DeductionCalculatorCollection : IDeductionCalculatorCollection
+    public class DeductionCalculatorCollection : ICalculatorCollection
     {
         private readonly IEnumerable<ICalculate> _deductions;
         public DeductionCalculatorCollection(ICalculationsLibrary library, IBenefitsConfig benefitsConfig)
