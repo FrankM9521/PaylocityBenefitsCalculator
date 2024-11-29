@@ -7,7 +7,8 @@ I am very familiar with Uncle Bob and clean code, the term "clean" architecture
 has confused me as I have come across it in articles and white papers, but felt 
 that was more like a blind man describing an elephant. I did not even realize
 "Clean" architecture was written by Bob Martin, I just figured it was 
-piggybacking off the name
+piggybacking off the name. I felt like a fish who had to stop and think to 
+be able to describe water.
 
 Clean architecture is simple. By "on the side", I stumbled through the following -
 
