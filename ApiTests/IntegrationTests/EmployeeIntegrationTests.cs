@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Api.Controllers;
 using Api.Api.Dtos.Dependent;
 using Api.Api.Dtos.Employee;
 using Api.Api.Utility;
@@ -14,8 +13,9 @@ using Api.BusinessLogic.Services;
 using Api.BusinessLogic.Validation;
 using Api.Data;
 using Api.Data.Repositories;
-using Api.Data.Repositories.Interfaces;
+using Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Paylocity.Employees.Api.Api.Controllers;
 using Xunit;
 
 namespace ApiTests.IntegrationTests;

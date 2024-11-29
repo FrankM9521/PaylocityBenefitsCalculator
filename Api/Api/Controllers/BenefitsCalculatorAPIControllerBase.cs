@@ -1,8 +1,8 @@
-﻿using Api.BusinessLogic.Models.Response;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Paylocity.Shared.Dto;
 using System.Net;
 
-namespace Api.Api.Controllers;
+namespace Paylocity.Employees.Api.Api.Controllers;
 
 /// <summary>
 /// Base class to wrap our API response

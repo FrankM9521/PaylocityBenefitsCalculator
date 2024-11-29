@@ -1,4 +1,4 @@
-﻿using Api.BusinessLogic.Models;
+﻿using Paylocity.Employees.Api.BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 

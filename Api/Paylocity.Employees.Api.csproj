@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paylocity.Employees.Dtos\Paylocity.Employees.Dtos.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.Services.Interfaces\Paylocity.Employees.DomainServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.Services\Paylocity.Employees.DomainServices.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Dto\Paylocity.Shared.Dto.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Mappers.DomainDto\Paylocity.Shared.Mappers.DomainDto.csproj" />
+  </ItemGroup>
+
+</Project>

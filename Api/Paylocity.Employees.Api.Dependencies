@@ -1,0 +1,6 @@
+﻿namespace Paylocity.Employees.Api
+{
+    public class Paylocity
+    {
+    }
+}

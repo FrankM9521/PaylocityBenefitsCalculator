@@ -1,8 +1,6 @@
 using Microsoft.OpenApi.Models;
 using MediatR;
 using System.Reflection;
-using Api.Data;
-using Api.Api.Utility;
 
 internal class Program
 {
@@ -34,12 +32,8 @@ internal class Program
         });
 
         builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-        builder.Services.RegisterDatabase();
-        builder.Services.RegisterConfig();
-        builder.Services.RegisterValidationCollections();
-        builder.Services.RegisterRepositories();
-        builder.Services.RegisterServices();
-        builder.Services.RegisterFactories();
+
+        // Register Containers Somewhere in here, usually done by assembly scanning
 
         var app = builder.Build();
 

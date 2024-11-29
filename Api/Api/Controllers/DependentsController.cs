@@ -1,12 +1,11 @@
-﻿using Api.Api.Dtos.Dependent;
-using Api.Api.Dtos.Employee;
-using Api.BusinessLogic.Mappers;
-using Api.BusinessLogic.Models.Response;
-using Api.BusinessLogic.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Paylocity.Employees.Dtos.Dependent;
+using Paylocity.Employees.Services.Interfaces;
+using Paylocity.Shared.Dto;
+using Paylocity.Shared.Mappers.DomainDto;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Api.Api.Controllers;
+namespace Paylocity.Employees.Api.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -57,7 +56,7 @@ public class DependentsController : BenefitsCalculatorAPIControllerBase
         var result = await _dependentService.Create(dependent.ToModel());
 
         return result.Success
-            ? CreatedAt<GetDependentDto>((int) result.newId, Request.Path.Value)
+            ? CreatedAt<GetDependentDto>((int)result.newId, Request.Path.Value)
             : MyBadRequest<GetDependentDto>(result.ErrorMessage);
     }
 }

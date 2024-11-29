@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paylocity.Payroll.Entities\Paylocity.PayChecks.Entities.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Interfaces\Paylocity.PayChecks.DataContext.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

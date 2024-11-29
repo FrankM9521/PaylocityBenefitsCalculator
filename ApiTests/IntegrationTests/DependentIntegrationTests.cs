@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Api.Controllers;
 using Api.Api.Dtos.Dependent;
 using Api.BusinessLogic.Mappers;
 using Api.BusinessLogic.Models.Response;
@@ -11,6 +10,8 @@ using Api.BusinessLogic.Validation;
 using Api.Data;
 using Api.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Paylocity.Employees.Api.Api.Controllers;
+using Paylocity.Employees.Api.BusinessLogic.Models;
 using Xunit;
 
 namespace ApiTests.IntegrationTests;
@@ -92,7 +93,7 @@ public class DependentIntegrationTests
             EmployeeId = 2,
             FirstName = "Jada",
             LastName = "Morant",
-            Relationship = Api.BusinessLogic.Models.Relationship.Spouse,
+            Relationship = Relationship.Spouse,
             DateOfBirth = System.DateTime.Now.AddDays(-30)
         };
 

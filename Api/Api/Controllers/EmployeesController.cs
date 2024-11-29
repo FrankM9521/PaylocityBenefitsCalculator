@@ -1,11 +1,11 @@
-﻿using Api.Api.Dtos.Employee;
-using Api.BusinessLogic.Mappers;
-using Api.BusinessLogic.Models.Response;
-using Api.BusinessLogic.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Paylocity.Employees.Dtos.Employee;
+using Paylocity.Employees.Services;
+using Paylocity.Shared.Dto;
+using Paylocity.Shared.Mappers.DomainDto;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Api.Api.Controllers;
+namespace Paylocity.Employees.Api.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]

@@ -1,20 +1,20 @@
 ﻿using Api.BusinessLogic.Commands;
-using Api.BusinessLogic.Models;
-using Api.Data.Entities;
 using Api.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using static ApiTests.UnitTests.PayStatementCalculations_Tests;
-using Api.BusinessLogic.Services.Interfaces;
 using Api.BusinessLogic.Services;
-using Api.BusinessLogic.Validation;
-using Api.Data.Repositories.Interfaces;
 using Api.Api.Utility;
 using Api.Data.Repositories;
 using Api.BusinessLogic.Mappers;
 using Api.BusinessLogic.Factories;
+using Api.Entities;
+using Api.Repositories.Interfaces;
+using Paylocity.Employees.Api.BusinessLogic.Models;
+using Paylocity.Employees.Api.BusinessLogic.Services.Interfaces;
+using Paylocity.Employees.Api.BusinessLogic.Validation;
 
 namespace ApiTests.IntegrationTests
 {
@@ -60,23 +60,23 @@ namespace ApiTests.IntegrationTests
             var payChecks = await _payCheckService.GetByEmployeeID(employee.Id);
 
             var gross = payChecks.Sum(pay => pay.GrossPay);
-            var baseBenefitsTest = payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.BenefitsBase]);
-            var depBenefits = payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee]);
-            var heBenefits = payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee]);
-            var senBenefits = payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee]);
+            var baseBenefitsTest = payChecks.Sum(pay => pay.Deductions[DeductionTypes.BenefitsBase]);
+            var depBenefits = payChecks.Sum(pay => pay.Deductions[DeductionTypes.DependentBenefitsFee]);
+            var heBenefits = payChecks.Sum(pay => pay.Deductions[DeductionTypes.HighEarnerBenefitsFee]);
+            var senBenefits = payChecks.Sum(pay => pay.Deductions[DeductionTypes.SeniorBenefitsFee]);
 
             Assert.Equal(26, payChecks.Count());
             Assert.Equal(employee.Salary, payChecks.Sum(pay => pay.GrossPay));
-            Assert.Equal(baseBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.BenefitsBase]));
-            Assert.Equal(dependentBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.DependentBenefitsFee]));
-            Assert.Equal(highEarnerBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.HighEarnerBenefitsFee]));
-            Assert.Equal(seniorBenefits, payChecks.Sum(pay => pay.Deductions[Api.BusinessLogic.Models.DeductionTypes.SeniorBenefitsFee]));
+            Assert.Equal(baseBenefits, payChecks.Sum(pay => pay.Deductions[DeductionTypes.BenefitsBase]));
+            Assert.Equal(dependentBenefits, payChecks.Sum(pay => pay.Deductions[DeductionTypes.DependentBenefitsFee]));
+            Assert.Equal(highEarnerBenefits, payChecks.Sum(pay => pay.Deductions[DeductionTypes.HighEarnerBenefitsFee]));
+            Assert.Equal(seniorBenefits, payChecks.Sum(pay => pay.Deductions[DeductionTypes.SeniorBenefitsFee]));
         }
 
         [Fact]
         public async Task When26ChecksExist_ItDoesNotAddAnother()
         {
-            _dbContextAccessor.DataBase.ClearPayChecks();
+            _dbContextAccessor.ClearPaychecks();
             var request = new CalculatePayCheckCommand(1);
             var employee = GetEmployee(request.EmployeeID, 60000, 0);
             var checks = new List<CalculatePayCheckCommandResponse>();

@@ -1,105 +1,65 @@
-Paylocity Benefits Calculator 11/24/2024 Frank Malinowski
+Paylocity Benefits Calculator 11/29/2024 Frank Malinowski
 
-This is a .NET Core 6 Application
-The Application runs, all end points are viewable in swagger. 
-	Should run without issue after nuget package restore
+"Clean" Architecture Version
 
-*******************************************************************************************
-* Testing																																	*
-********************************************************************************************
-I was having an issue with HttpClient, so in the integration tests I tested at the controller level. 
+This is my current implementation of the architecture I started using in 2013. 
+I am very familiar with Uncle Bob and clean code, the term "clean" architecture 
+has confused me as I have come across it in articles and white papers, but felt 
+that was more like a blind man describing an elephant. I did not even realize
+"Clean" architecture was written by Bob Martin, I just figured it was 
+piggybacking off the name
 
-I completed the Integration Tests and added one more. However my primary focus was on 
-unit testing the calculations and validations and the PayCheck Command Interactor
+Clean architecture is simple. By "on the side", I stumbled through the following -
 
-Here are the requirements and the tests that validate them
+Implementation does not reference implementation. Instead, the interface projects 
+for the implementation are what is referenced.  The "on the side" is the DI container. 
+The DI container determines what implementation to inject into the interface, 
+either explicitly or assembly scanning. It is the DI container (or containers if there is
+a need to be more granular, e.g having a container to wire up an API layer to domain 
+services, and another to wire up domain services to repositories)
 
-	1. Able To View Employee And Dependents												
-			-  DependentIntegrationTests.WhenAskedForAllDependents_ShouldReturnAllDependents
+Additionally, there are few cross cutting concerms. The Employee domain only references 
+Employee and Shared  models. The PayCheck domain only references PayCheck models 
+and shared models. Cross cutting concerns were only a factor in the Valiidation Service,
+which in the real world would be replaced by something like Fluent Validation
 
-	2. An Employee May Only have One Spouse Or Domestic Partner			
-			- DependentIntegrationTests.WhenSpouseOrDomesticPartnerExists_ShouldNotCreateAnother
+The general layout here is 2 API projects (Employee and Paycheck), DI containers for each, 
+domain services for each, repositories for each, Validation Service, shared projects and config. 
 
-	3. An Employee May Have An Unlimited Number of Children					
-		- CalculatePayrollCommandHandler_Tests.ItCalculatesCorrectly  (Theory goes up to 10 children)
+The solution builds, but I had to add a few stubs and inject a few more dependencies that 
+I idid not wire up.
 
-	4. Calculates Pay Check With the Following Rules -
-			A.  26 Paychecks Per Year With Deductions Spread Out Evenly Over the Year	
-				-  CalculatePayCheckCommanHandler_IntegrationTests.When26ChecksExist_ItDoesNotAddAnother
-				- CalculatePayCheckCommanHandler_IntegrationTests.ItCalculatesYearCorrectly
+Paylocity.Employees and Paylocity.PayChecks both have these projects
+	Api											- Web API project
+	Api.DependencyInjection		- Wire up for our solution
+	DataContext							- Mock context
+	DataContext.Interfaces			- Mock context Interfaces
+	Dtos											- POCO data transfer objects
+	Entities									- POCO entity models
+	Models									- POCO domain models
+	Repositories							- Data access
+	Repositories.Interfaces			- Data access interfaces
+	DomainServices						- Domain services
+	DomainServices.Interfaces		- Domain service interfaces 
 
-			B. Employees Have a Base Cost of $1,000 Per Month											
-				- CalculatePayrollCommandHandler_Tests.ItCalculatesCorrectly
+Additionally (For all the wrong reasons, but I needed to do it right)
+Paylocity.Validation
+Paylocity.Validation.Interfaces
+Paylocity.Validation.Models
 
-			C. Each Dependent Represents an additional $600 Per Month							
-				- CalculatePayrollCommandHandler_Tests.ItCalculatesCorrectly
+And the following shared projects
+Paylocity.Shared/	
+	DomainServices.Interfaces
+	Dto
+	Entitities
+	Mappers.DomainDto
+	Mappers.EntityDomain
+	Models
+	Repositories.Interfaces
 
-			D. Employees that make more than $80,000 Per Year Will Incur an additional 2% of their yearly salary in benefits cost 		
-				- CalculatePayrollCommandHandler_Tests.ItCalculatesCorrectly			
-				
-			E. Dependents that are over 50 years old will incur an additional $200 per month				
-				- CalculatePayrollCommandHandler_Tests.ItCalculatesCorrectly
-				
 
-********************************************************************************************
-* Application Structure																											*
-********************************************************************************************
-I wanted to avoid additional projects, so I organized the project folders into  
-API, Business Logic and Data folders
 
-** API			-	The API layer consists of the existing controllers, and an additional controller 
-						for PayChecks. 
-						This controller uses CQRS with Mediator to Calculate the Pay Check and a 
-						almost RESTful API to Get Paychecks
-					- Changed controllers to return IActionResult for both flexibility and readability
-								- Added a base class to wrap API responses
-								- I used records in some areas, but did not have time to change the DTOs
 
-** Business Logic		- To Handle Deductions, I created individual classes for each deduction 
-									type that implement an ICalculate interface. These are located 
-									in Calculators/Deductions
 
-										1. CalculateHighEarnerDeductionCalculator
-										2. DependentDeductionCalculator
-										3. SeniorBenefitsDeductionCalculator
-										4. StandardBenfitDeductionCalculator
 
-									These calulator are injected with an instance of an ICalculationsLibrary. 
-									There are 2 Calculation Libraries. These are located in 
-									Calculators/CalculationLibraries
-										1. StandardCalculationLibrary					
-											- Used for the first  25 paychecks
-										2. LastPayCheckOfYearCalculationLibrary	
-											- Used on the last paycheck to resolve any drift due to rounding
-									
-									Calculators are instanced by CalculationLibraryFactory
 
-									Calculators are loaded into a DeductionCalculatorCollection which 
-										implements ICalculatorCollection. More Deduction Calculators can 
-										be created for additional deduction types, or a new type of calculator 
-										that implements its' own ICalculatorCollection. Such as one for 
-										calculating pay for overtime or bonus
-
-									- To Handle Validation, I created Validators that implement an IValidate 
-										interface and instances of IValidationCollection
-										1. ValidateDependentOnlyHasOneSpouseOrDomesticPartner 
-											- Runs when a Dependent is created
-										2. ValidateEmployeeHasLessThan26Checks 
-											- Runs when a Pay Check is being created
-
-										THERE WAS A LANDMINE in the relationship between Employee 
-										and Dependents. Each Dependent contained an instance of the Employee. 
-										Which in turn had instances of the dependents. I removed the Employee 
-										property from the model and added employee ID
-
-									- Creating a Pay Check is done by a command handler.  The creation is 
-										done in Services/CalculatePayCheckService. This centralozes creation. 
-										The process is simple. First gross pay is calculated and then each deduction 
-										calculator is ran. After that, a new entry is created in the DB. 
-										The result is returned as an immutable record
-
-** Data							I created a static singleton to be the data store and seed it with the same data 
-									that was supplied in the controllers. Then just repositories and lots of interfaces
-
-Yes, I over engineered and did spend a weekend on it, but I was having fun.
-					

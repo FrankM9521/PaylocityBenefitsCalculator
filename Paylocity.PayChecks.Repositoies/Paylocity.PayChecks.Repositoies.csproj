@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paylocity.Models.Payroll\Paylocity.PayChecks.Models.csproj" />
+    <ProjectReference Include="..\Paylocity.Models.Shared\Paylocity.Shared.Models.csproj" />
+    <ProjectReference Include="..\Paylocity.PayChecks.Repositories.Interfaces\Paylocity.PayChecks.Repositories.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Interfaces\Paylocity.PayChecks.DataContext.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Mappers\Paylocity.Shared.Mappers.EntityDomain.csproj" />
+  </ItemGroup>
+
+</Project>

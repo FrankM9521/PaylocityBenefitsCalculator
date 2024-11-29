@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paylocity.Employees.DataContext.Interfaces\Paylocity.Employees.DataContext.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.DataContext\Paylocity.Employees.DataContext.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.Repositories.Interfaces\Paylocity.Employees.Repositories.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.Repositories\Paylocity.Employees.Repositories.csproj" />
+    <ProjectReference Include="..\Paylocity.Employees.Services\Paylocity.Employees.DomainServices.csproj" />
+    <ProjectReference Include="..\Paylocity.PayCheck.DataContext\Paylocity.PayChecks.DomainServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.PayChecks.DataContext\Paylocity.PayChecks.DataContext.csproj" />
+    <ProjectReference Include="..\Paylocity.PayChecks.Repositoies\Paylocity.PayChecks.Repositoies.csproj" />
+    <ProjectReference Include="..\Paylocity.PayChecks.Services\Paylocity.PayChecks.DomainServices.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Config\Paylocity.Shared.Config.csproj" />
+    <ProjectReference Include="..\Paylocity.Shared.Interfaces\Paylocity.PayChecks.DataContext.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.ValidationLibrary.Interfaces\Paylocity.Validation.Interfaces.csproj" />
+    <ProjectReference Include="..\Paylocity.Validation\Paylocity.Validation.csproj" />
+  </ItemGroup>
+
+</Project>
